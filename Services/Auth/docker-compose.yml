@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  auth-api:
+    build:
+      context: .
+      dockerfile: ezyGo.Auth.Service/Dockerfile
+    ports:
+      - "5005:80"
+      - "7180:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__AuthConnection=Server=sqlserver;Database=ezyGoAuth;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+      - Jwt__Key=ThisIsAVeryLongSecretKeyForTestingPurposesOnlyMinimum256Bits
+      - Jwt__Issuer=ezyGoAuth
+      - Jwt__Audience=ezyGoClient
+    depends_on:
+      - sqlserver
+    networks:
+      - auth-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - auth-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  auth-network:
+    driver: bridge

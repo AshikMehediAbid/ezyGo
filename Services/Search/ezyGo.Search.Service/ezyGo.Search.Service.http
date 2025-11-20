@@ -1,0 +1,6 @@
+@ezyGo.Search.Service_HostAddress = http://localhost:5180
+
+GET {{ezyGo.Search.Service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
