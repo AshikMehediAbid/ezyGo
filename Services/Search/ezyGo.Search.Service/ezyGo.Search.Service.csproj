@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>ec887b77-264d-4e5c-863b-84e9fafa4141</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\ezyGo.Search.Domain\ezyGo.Search.Domain.csproj" />
   </ItemGroup>
 
 </Project>

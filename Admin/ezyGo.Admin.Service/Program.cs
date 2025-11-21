@@ -1,4 +1,9 @@
+using ezyGo.Admin.Service.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// IoC
+builder.Services.AddDependencies(builder.Configuration);
 
 // Add services to the container.
 
