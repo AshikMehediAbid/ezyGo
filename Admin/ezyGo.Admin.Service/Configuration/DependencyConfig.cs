@@ -15,6 +15,8 @@ public static class DependencyConfig
         services.AddScoped<ITrainRepository, TrainRepository>();
         services.AddScoped<ITrainService, TrainService>();
 
+        services.AddScoped<IBusRepository, BusRepository>();
+        services.AddScoped<IBusService, BusService>();
 
 
         // AutoMapper

@@ -13,6 +13,6 @@ public class TrainStation
 [Owned]
 public class Geo
 {
-    public int Latitude { get; set; }
-    public int Longitude { get; set; }
+    public decimal Latitude { get; set; }
+    public decimal Longitude { get; set; }
 }
