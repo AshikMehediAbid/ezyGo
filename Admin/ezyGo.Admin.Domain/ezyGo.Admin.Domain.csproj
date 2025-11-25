@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ezygo.Core\ezyGo.Core.csproj" />
+  </ItemGroup>
+
 </Project>

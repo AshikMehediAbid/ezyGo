@@ -1,9 +1,7 @@
 ﻿using ezyGo.Admin.Domain.Interfaces;
 using ezyGo.Admin.Domain.Models;
-using ezyGo.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ezyGo.Admin.Service.Controllers;
 
@@ -11,116 +9,75 @@ namespace ezyGo.Admin.Service.Controllers;
 [ApiController]
 public class BusController : ControllerBase
 {
-    private readonly IBusService _busService;
-    private readonly ILogger<BusController> _logger;
+    private readonly IBusCompanyService _busCompanyService;
 
-    public BusController(IBusService busService, ILogger<BusController> logger)
+    public BusController(IBusCompanyService busCompanyService)
     {
-        _busService = busService;
-        _logger = logger;
+        _busCompanyService = busCompanyService;
     }
 
-    [HttpPost]
-    [Route("add-bus-station")]
-    public async Task<IActionResult> CreateStation([FromForm] Station station)
+    [HttpGet]
+    [Route("companies")]
+    public async Task<ActionResult<IEnumerable<BusCompany>>> GetBusCompanies()
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        var companies = await _busCompanyService.GetAllBusCompaniesAsync();
+        return Ok(companies);
+    }
 
+    [HttpGet("company/{id}")]
+    public async Task<ActionResult<BusCompany>> GetBusCompanyById(int id)
+    {
+        var company = await _busCompanyService.GetBusCompanyByIdAsync(id);
+        if (company == null)
+            return NotFound();
+
+        return Ok(company);
+    }
+
+
+    [HttpPost]
+    [Route("company/create")]
+    public async Task<ActionResult<BusCompany>> CreateBusCompany(BusCompany company)
+    {
         try
         {
-            await _busService.Create(station);
-            return Ok(station);
+            var createdCompany = await _busCompanyService.CreateBusCompanyAsync(company);
+            return Ok(company);
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
-
 
 
     [HttpPut]
-    [Route("update-bus-station")]
-    public async Task<IActionResult> UpdateStation([FromForm] Station station)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            await _busService.Update(station);
-            return Ok(station);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-
-
-
-    [HttpGet]
-    [Route("bus-station/{id}")]
-    public async Task<IActionResult> GetStationById(int id)
+    [Route("company/update/{id}")]
+    public async Task<IActionResult> UpdateBusCompany(int id, BusCompany company)
     {
         try
         {
-            Station station = await _busService.GetById(id);
-            return Ok(station);
+            await _busCompanyService.UpdateBusCompanyAsync(id, company);
+            return NoContent();
         }
-        catch (Exception ex)
+        catch (ArgumentException ex)
         {
-            _logger.LogInformation(ex.Message, "Something went wrong while fetching the station.");
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
-
-    }
-
-
-    [HttpGet]
-    [Route("bus-station")]
-    public async Task<IActionResult> GetStations(string? filter)
-    {
-        try
-        {
-            var stations =await _busService.GetStations(filter);
-            return Ok(stations);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message.ToString());
-
-        }
-        
     }
 
     [HttpDelete]
-    [Route("bus-station")]
-    public async Task<IActionResult> DeleteStations(int id)
+    [Route("company/delete/{id}")]
+    public async Task<IActionResult> DeleteBusCompany(int id)
     {
         try
         {
-            await _busService.Delete(id);
-            return Ok($"Station with id: {id} is deleted!");
+            await _busCompanyService.DeleteBusCompanyAsync(id);
+            return NoContent();
         }
-        catch(NotFoundException ex)
+        catch (ArgumentException ex)
         {
-            _logger.LogInformation($"Message: {ex.Message}" +
-                $"Code: {ex.HttpStatusCode}");
-
             return NotFound(ex.Message);
         }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message.ToString());
-
-        }
-
     }
 }

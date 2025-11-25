@@ -6,9 +6,9 @@ namespace ezyGo.Admin.Domain.Managers;
 
 public class BusService : IBusService
 {
-    private readonly IBusRepository _busRepository;
+    private readonly IBusStationRepository _busRepository;
 
-    public BusService(IBusRepository busRepository)
+    public BusService(IBusStationRepository busRepository)
     {
         _busRepository = busRepository;
     }

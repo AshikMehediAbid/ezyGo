@@ -9,4 +9,6 @@ public class AdminDbContext : DbContext
 
     public DbSet<TrainStation> TrainStations { get; set; }
     public DbSet<BusStation> BusStations { get; set; }
+    public DbSet<BusCompanyEntity> BusCompanies { get; set; }
+
 }

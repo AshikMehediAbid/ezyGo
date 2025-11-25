@@ -9,11 +9,11 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace ezyGo.Admin.Storage.Repositories;
 
-public class BusRepository : IBusRepository
+public class BusStationRepository : IBusStationRepository
 {
     private readonly IMapper _mapper;
     private readonly AdminDbContext _db;
-    public BusRepository(IMapper mapper, AdminDbContext db)
+    public BusStationRepository(IMapper mapper, AdminDbContext db)
     {
         _mapper = mapper;
         _db = db;

@@ -2,7 +2,7 @@
 
 namespace ezyGo.Admin.Domain.Interfaces;
 
-public interface IBusRepository
+public interface IBusStationRepository
 {
     Task Create(Station busStation);
     Task Delete(int id);
