@@ -1,7 +1,9 @@
 ﻿using ezyGo.Admin.Domain.Interfaces;
 using ezyGo.Admin.Domain.Models;
+using ezyGo.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ezyGo.Admin.Service.Controllers;
 
@@ -10,10 +12,12 @@ namespace ezyGo.Admin.Service.Controllers;
 public class BusController : ControllerBase
 {
     private readonly IBusService _busService;
+    private readonly ILogger<BusController> _logger;
 
-    public BusController(IBusService busService)
+    public BusController(IBusService busService, ILogger<BusController> logger)
     {
         _busService = busService;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -56,5 +60,67 @@ public class BusController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+    }
+
+
+
+
+    [HttpGet]
+    [Route("bus-station/{id}")]
+    public async Task<IActionResult> GetStationById(int id)
+    {
+        try
+        {
+            Station station = await _busService.GetById(id);
+            return Ok(station);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex.Message, "Something went wrong while fetching the station.");
+            return BadRequest(ex.Message);
+        }
+
+    }
+
+
+    [HttpGet]
+    [Route("bus-station")]
+    public async Task<IActionResult> GetStations(string? filter)
+    {
+        try
+        {
+            var stations =await _busService.GetStations(filter);
+            return Ok(stations);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message.ToString());
+
+        }
+        
+    }
+
+    [HttpDelete]
+    [Route("bus-station")]
+    public async Task<IActionResult> DeleteStations(int id)
+    {
+        try
+        {
+            await _busService.Delete(id);
+            return Ok($"Station with id: {id} is deleted!");
+        }
+        catch(NotFoundException ex)
+        {
+            _logger.LogInformation($"Message: {ex.Message}" +
+                $"Code: {ex.HttpStatusCode}");
+
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message.ToString());
+
+        }
+
     }
 }

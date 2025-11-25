@@ -18,6 +18,28 @@ public class BusService : IBusService
         await _busRepository.Create(station);
     }
 
+    public async Task Delete(int id)
+    {
+        await _busRepository.Delete(id);
+    }
+
+    public async Task<Station> GetById(int id)
+    {
+        var station = await _busRepository.GetById(id);
+
+        if (station == null)
+            throw new Exception("Station not found!");
+
+        return station;
+    }
+
+    public async Task<List<Station>> GetStations(string? filter)
+    {
+        var stations = await _busRepository.GetStations(filter);
+
+        return stations;
+    }
+
     public async Task Update(Station station)
     {
         await _busRepository.Update(station);

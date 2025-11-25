@@ -20,6 +20,8 @@ public class MappingProfile : Profile
            .ForMember(dest => dest.StationDescription,
                opt => opt.MapFrom(src => src.StationDescription));
 
+        CreateMap<BusStation, Station>();
+
         CreateMap<ezyGo.Admin.Domain.Models.Geo, ezyGo.Admin.Storage.Entities.Geo>();
         CreateMap<ezyGo.Admin.Storage.Entities.Geo, ezyGo.Admin.Domain.Models.Geo>();
     }
