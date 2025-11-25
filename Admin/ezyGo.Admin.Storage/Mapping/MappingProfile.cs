@@ -12,11 +12,19 @@ public class MappingProfile : Profile
             .ForMember(d => d.TrainStationName,
                 opt => opt.MapFrom(src => src.StationName))
             .ForMember(dest => dest.TrainStationDescription,
-                opt => opt.MapFrom(src => src.StationDescription))
-            .ForMember(dest => dest.TrainStationId, opt => opt.Ignore());
+                opt => opt.MapFrom(src => src.StationDescription));
+
+        CreateMap<Station, BusStation>()
+           .ForMember(d => d.StationName,
+               opt => opt.MapFrom(src => src.StationName))
+           .ForMember(dest => dest.StationDescription,
+               opt => opt.MapFrom(src => src.StationDescription));
 
         CreateMap<ezyGo.Admin.Domain.Models.Geo, ezyGo.Admin.Storage.Entities.Geo>();
         CreateMap<ezyGo.Admin.Storage.Entities.Geo, ezyGo.Admin.Domain.Models.Geo>();
     }
+
+
+
 
 }
