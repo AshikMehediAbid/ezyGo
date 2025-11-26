@@ -8,7 +8,8 @@ public class AdminDbContext : DbContext
     public AdminDbContext(DbContextOptions<AdminDbContext> options) : base(options) { }
 
     public DbSet<TrainStation> TrainStations { get; set; }
-    public DbSet<BusStation> BusStations { get; set; }
+    public DbSet<BusStationEntity> BusStations { get; set; }
     public DbSet<BusCompanyEntity> BusCompanies { get; set; }
+    public DbSet<BusEntity> Buses { get; set; }
 
 }

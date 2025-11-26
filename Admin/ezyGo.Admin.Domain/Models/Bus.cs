@@ -1,11 +1,16 @@
-﻿namespace ezyGo.Admin.Domain.Models;
+﻿using ezyGo.Admin.Storage.Entities;
+
+namespace ezyGo.Admin.Domain.Models;
 
 public class Bus
 {
-    public int BusId { get; set; }
+    public int Id { get; set; }
     public string BusName { get; set; } = string.Empty;
     public string BusRegNo { get; set; } = string.Empty;
     public string DriverName { get; set; } = string.Empty;
-    public int CompanyId { get; set; }
-    public int CategoryId { get; set; }
+    public string TotalCapacity { get; set; } = string.Empty;
+    public BusType BusType { get; set; }
+    public int BusCompanyId { get; set; }
+    public string CompanyName { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
 }

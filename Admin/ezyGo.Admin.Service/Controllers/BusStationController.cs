@@ -11,12 +11,12 @@ namespace ezyGo.Admin.Service.Controllers;
 [ApiController]
 public class BusStationController : ControllerBase
 {
-    private readonly IBusService _busService;
+    private readonly IBusStationService _busStationService;
     private readonly ILogger<BusStationController> _logger;
 
-    public BusStationController(IBusService busService, ILogger<BusStationController> logger)
+    public BusStationController(IBusStationService busService, ILogger<BusStationController> logger)
     {
-        _busService = busService;
+        _busStationService = busService;
         _logger = logger;
     }
 
@@ -31,7 +31,7 @@ public class BusStationController : ControllerBase
 
         try
         {
-            await _busService.Create(station);
+            await _busStationService.CreateBusStationAsync(station);
             return Ok(station);
         }
         catch (Exception ex)
@@ -53,7 +53,7 @@ public class BusStationController : ControllerBase
 
         try
         {
-            await _busService.Update(station);
+            await _busStationService.UpdateBusStationAsync(station);
             return Ok(station);
         }
         catch (Exception ex)
@@ -71,7 +71,7 @@ public class BusStationController : ControllerBase
     {
         try
         {
-            Station station = await _busService.GetById(id);
+            Station station = await _busStationService.GetBusStationByIdAsync(id);
             return Ok(station);
         }
         catch (Exception ex)
@@ -89,7 +89,7 @@ public class BusStationController : ControllerBase
     {
         try
         {
-            var stations =await _busService.GetStations(filter);
+            var stations =await _busStationService.GetBusStationsAsync(filter);
             return Ok(stations);
         }
         catch (Exception ex)
@@ -106,7 +106,7 @@ public class BusStationController : ControllerBase
     {
         try
         {
-            await _busService.Delete(id);
+            await _busStationService.DeleteBusStationAsync(id);
             return Ok($"Station with id: {id} is deleted!");
         }
         catch(NotFoundException ex)

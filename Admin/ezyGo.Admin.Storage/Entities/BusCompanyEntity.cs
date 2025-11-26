@@ -5,7 +5,7 @@ namespace ezyGo.Admin.Storage.Entities;
 public class BusCompanyEntity
 {
     [Key]
-    public int CompanyId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(100)]
@@ -19,7 +19,7 @@ public class BusCompanyEntity
     [MaxLength(50)]
     public string RegistrationNo { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    public ICollection<Bus> Buses { get; set; } = new List<Bus>();
+    public ICollection<BusEntity> Buses { get; set; } = new List<BusEntity>();
 }
