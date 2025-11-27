@@ -10,8 +10,8 @@ public class BusEntity
     public string DriverName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    public int BusCompanyEntityId { get; set; }
-    public BusCompanyEntity Company { get; set; } = null!;
+    public int? BusCompanyEntityId { get; set; }
+    public BusCompanyEntity? Company { get; set; } = null;
     
 }
 public enum BusType

@@ -6,4 +6,5 @@ namespace ezyGo.Admin.Storage.Repositories;
 public interface IBusCompanyRepository : IGenericRepository<BusCompanyEntity>
 {
     Task<IEnumerable<BusCompanyEntity>> GetAllBusCompanyAsync(string? filter);
+    Task<BusCompanyEntity?> GetBusCompanyByIdAsync(int id);
 }

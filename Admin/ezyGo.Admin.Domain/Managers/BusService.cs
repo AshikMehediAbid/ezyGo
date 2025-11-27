@@ -49,7 +49,7 @@ public class BusService : IBusService
 
     public async Task<BusCompany?> GetBusCompanyByIdAsync(int id)
     {
-        var company = await _busCompanyRepo.GetByIdAsync(id);
+        var company = await _busCompanyRepo.GetBusCompanyByIdAsync(id);
         if (company == null)
             throw new NotFoundException($"Bus Company with id {id}");
 

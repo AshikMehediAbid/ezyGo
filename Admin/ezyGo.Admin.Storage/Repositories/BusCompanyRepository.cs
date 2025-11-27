@@ -34,4 +34,14 @@ public class BusCompanyRepository : GenericRepository<BusCompanyEntity>, IBusCom
         var busCompanyEntities = await busCompanyQuery.ToListAsync();
         return busCompanyEntities;
     }
+
+    public Task<BusCompanyEntity?> GetBusCompanyByIdAsync(int id)
+    {
+        var busCompany = _db.BusCompanies
+            .Include(bc => bc.Buses)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(bc => bc.Id == id);
+
+        return busCompany;
+    }
 }
