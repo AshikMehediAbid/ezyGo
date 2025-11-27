@@ -41,5 +41,8 @@ public class MappingProfile : Profile
         CreateMap<ezyGo.Admin.Domain.Models.Geo, ezyGo.Admin.Storage.Entities.Geo>();
         CreateMap<ezyGo.Admin.Storage.Entities.Geo, ezyGo.Admin.Domain.Models.Geo>();
 
+        //Map Route
+        CreateMap<Route, RouteEntity>().ReverseMap();
+
     }
 }
