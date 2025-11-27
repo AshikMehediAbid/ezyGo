@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ezygo.Core\ezyGo.Core.csproj" />
+    <ProjectReference Include="..\..\Core\ezyGo.EntityFrameworkCore\ezyGo.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\ezyGo.Admin.Domain\ezyGo.Admin.Domain.csproj" />
     <ProjectReference Include="..\ezyGo.Admin.Storage\ezyGo.Admin.Storage.csproj" />
   </ItemGroup>

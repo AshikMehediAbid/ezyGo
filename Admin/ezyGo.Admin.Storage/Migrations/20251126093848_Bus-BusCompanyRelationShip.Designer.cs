@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ezyGo.Admin.Storage.Sql;
 
@@ -11,9 +12,11 @@ using ezyGo.Admin.Storage.Sql;
 namespace ezyGo.Admin.Storage.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    partial class AdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251126093848_Bus-BusCompanyRelationShip")]
+    partial class BusBusCompanyRelationShip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BusCompanyEntityId")
+                    b.Property<int>("BusCompanyEntityId")
                         .HasColumnType("int");
 
                     b.Property<string>("BusName")
@@ -90,7 +93,7 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     b.HasIndex("BusCompanyEntityId");
 
-                    b.ToTable("Buses", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStationEntity", b =>
@@ -140,7 +143,8 @@ namespace ezyGo.Admin.Storage.Migrations
                     b.HasOne("ezyGo.Admin.Storage.Entities.BusCompanyEntity", "Company")
                         .WithMany("Buses")
                         .HasForeignKey("BusCompanyEntityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
                 });

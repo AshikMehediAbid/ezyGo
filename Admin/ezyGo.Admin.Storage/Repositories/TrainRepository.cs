@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using ezyGo.Admin.Domain.Interfaces;
-using ezyGo.Admin.Domain.Models;
 using ezyGo.Admin.Storage.Entities;
 using ezyGo.Admin.Storage.Sql;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -17,7 +15,7 @@ public class TrainRepository : ITrainRepository
         _db = db;
     }
 
-    public async Task Create(Station station)
+    public async Task Create(TrainStation station)
     {
         var trainStationEntity = _mapper.Map<TrainStation>(station);
 

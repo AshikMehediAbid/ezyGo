@@ -2,7 +2,7 @@
 
 namespace ezyGo.Admin.Storage.Entities;
 
-public class BusStation
+public class BusStationEntity
 {
     public int Id { get; set; }
     public string StationName { get; set; }

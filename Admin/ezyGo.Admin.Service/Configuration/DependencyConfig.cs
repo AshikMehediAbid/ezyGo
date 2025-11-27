@@ -1,8 +1,9 @@
 ﻿using ezyGo.Admin.Domain.Interfaces;
 using ezyGo.Admin.Domain.Managers;
-using ezyGo.Admin.Storage.Mapping;
+using ezyGo.Admin.Domain.Mapping;
 using ezyGo.Admin.Storage.Repositories;
 using ezyGo.Admin.Storage.Sql;
+using ezyGo.EntityFrameworkCore.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,8 +16,16 @@ public static class DependencyConfig
         services.AddScoped<ITrainRepository, TrainRepository>();
         services.AddScoped<ITrainService, TrainService>();
 
+        services.AddScoped<IBusStationRepository, BusStationRepository>();
+        services.AddScoped<IBusStationService, BusStationService>();
+
+        services.AddScoped<IBusCompanyRepository, BusCompanyRepository>();
+        services.AddScoped<IBusService, BusService>();
+
         services.AddScoped<IBusRepository, BusRepository>();
         services.AddScoped<IBusService, BusService>();
+
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
         // AutoMapper

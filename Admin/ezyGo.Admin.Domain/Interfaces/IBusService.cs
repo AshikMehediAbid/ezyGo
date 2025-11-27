@@ -4,9 +4,18 @@ namespace ezyGo.Admin.Domain.Interfaces;
 
 public interface IBusService
 {
-    Task Create(Station bus);
-    Task Delete(int id);
-    Task<Station> GetById(int id);
-    Task<List<Station>> GetStations(string? filter);
-    Task Update(Station bus);
+    //=============== Bus Company ====================//
+    Task<IEnumerable<BusCompany>> GetAllBusCompaniesAsync(string? filter);
+    Task<BusCompany?> GetBusCompanyByIdAsync(int id);
+    Task<BusCompany> CreateBusCompanyAsync(BusCompany company);
+    Task UpdateBusCompanyAsync(int id, BusCompany company);
+    Task DeleteBusCompanyAsync(int id);
+ 
+
+    //=============== Bus ====================//
+    Task<IEnumerable<Bus>> GetAllBusesAsync(string? filter);
+    Task<Bus?> GetBusByIdAsync(int id);
+    Task<Bus> CreateBusAsync(Bus bus);
+    Task UpdateBusAsync(int id, Bus bus);
+    Task DeleteBusAsync(int id);
 }

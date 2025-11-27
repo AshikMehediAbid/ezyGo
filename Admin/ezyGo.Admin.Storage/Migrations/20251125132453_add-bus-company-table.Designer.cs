@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ezyGo.Admin.Storage.Sql;
 
@@ -11,9 +12,11 @@ using ezyGo.Admin.Storage.Sql;
 namespace ezyGo.Admin.Storage.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    partial class AdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251125132453_add-bus-company-table")]
+    partial class addbuscompanytable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,13 +25,49 @@ namespace ezyGo.Admin.Storage.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusCompanyEntity", b =>
+            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.Bus", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusId"));
+
+                    b.Property<int?>("BusCompanyEntityCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusRegNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DriverName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BusId");
+
+                    b.HasIndex("BusCompanyEntityCompanyId");
+
+                    b.ToTable("Bus");
+                });
+
+            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusCompanyEntity", b =>
+                {
+                    b.Property<int>("CompanyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompanyId"));
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -48,52 +87,12 @@ namespace ezyGo.Admin.Storage.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CompanyId");
 
                     b.ToTable("BusCompanies");
                 });
 
-            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BusCompanyEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BusRegNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BusType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotalCapacity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusCompanyEntityId");
-
-                    b.ToTable("Buses", (string)null);
-                });
-
-            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStationEntity", b =>
+            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,21 +134,18 @@ namespace ezyGo.Admin.Storage.Migrations
                     b.ToTable("TrainStations");
                 });
 
-            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusEntity", b =>
+            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.Bus", b =>
                 {
-                    b.HasOne("ezyGo.Admin.Storage.Entities.BusCompanyEntity", "Company")
+                    b.HasOne("ezyGo.Admin.Storage.Entities.BusCompanyEntity", null)
                         .WithMany("Buses")
-                        .HasForeignKey("BusCompanyEntityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Company");
+                        .HasForeignKey("BusCompanyEntityCompanyId");
                 });
 
-            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStationEntity", b =>
+            modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStation", b =>
                 {
                     b.OwnsOne("ezyGo.Admin.Storage.Entities.Geo", "Geo", b1 =>
                         {
-                            b1.Property<int>("BusStationEntityId")
+                            b1.Property<int>("BusStationId")
                                 .HasColumnType("int");
 
                             b1.Property<decimal>("Latitude")
@@ -158,12 +154,12 @@ namespace ezyGo.Admin.Storage.Migrations
                             b1.Property<decimal>("Longitude")
                                 .HasColumnType("decimal(18,2)");
 
-                            b1.HasKey("BusStationEntityId");
+                            b1.HasKey("BusStationId");
 
                             b1.ToTable("BusStations");
 
                             b1.WithOwner()
-                                .HasForeignKey("BusStationEntityId");
+                                .HasForeignKey("BusStationId");
                         });
 
                     b.Navigation("Geo")

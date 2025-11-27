@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ezyGo.Admin.Storage.Sql;
 
@@ -11,9 +12,11 @@ using ezyGo.Admin.Storage.Sql;
 namespace ezyGo.Admin.Storage.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    partial class AdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251126080030_TableDataUpdate")]
+    partial class TableDataUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace ezyGo.Admin.Storage.Migrations
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusCompanyEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CompanyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompanyId"));
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -48,7 +51,7 @@ namespace ezyGo.Admin.Storage.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CompanyId");
 
                     b.ToTable("BusCompanies");
                 });
@@ -61,9 +64,6 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BusCompanyEntityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("BusName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,6 +73,9 @@ namespace ezyGo.Admin.Storage.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BusType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -88,9 +91,9 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusCompanyEntityId");
+                    b.HasIndex("CompanyId");
 
-                    b.ToTable("Buses", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.BusStationEntity", b =>
@@ -139,8 +142,9 @@ namespace ezyGo.Admin.Storage.Migrations
                 {
                     b.HasOne("ezyGo.Admin.Storage.Entities.BusCompanyEntity", "Company")
                         .WithMany("Buses")
-                        .HasForeignKey("BusCompanyEntityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
                 });
