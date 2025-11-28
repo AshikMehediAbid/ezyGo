@@ -31,4 +31,31 @@ public class BusStationRepository : GenericRepository<BusStationEntity>, IBusSta
         return stationEntities;
     }
 
+    public async Task DeleteBusStationWithDependenciesAsync(BusStationEntity station)
+    {
+        // Step 1: delete all route stoppages that depends on this station
+        var stoppagesToDelete = await _db.RouteStoppages
+            .Where(rs => rs.BusStationEntityId == station.Id)
+            .ToListAsync();
+
+        if (stoppagesToDelete.Any())
+        {
+            _db.RouteStoppages.RemoveRange(stoppagesToDelete);
+        }
+
+        // step 2: delete all routes depends on the station
+        var routesToDelete = await _db.Routes
+            .Where(r => r.StartingPointId == station.Id || r.EndingPointId == station.Id)
+            .ToListAsync();
+
+        if (routesToDelete.Any())
+        {
+            _db.Routes.RemoveRange(routesToDelete);
+        }
+
+        // Finally, delete the station itself
+        _db.BusStations.Remove(station);
+        await _db.SaveChangesAsync();
+    }
+
 }

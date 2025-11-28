@@ -25,6 +25,9 @@ public static class DependencyConfig
         services.AddScoped<IBusRepository, BusRepository>();
         services.AddScoped<IBusService, BusService>();
 
+        services.AddScoped<IRouteRepository, RouteRepository>();
+        services.AddScoped<IRouteService, RouteService>();
+
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 

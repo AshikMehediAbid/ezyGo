@@ -33,7 +33,8 @@ public class BusStationService : IBusStationService
         if (busStation == null)
             throw new NotFoundException($"Bus Station with id {id}");
 
-        await _busStationRepo.DeleteAsync(busStation);
+        // Delete station along with all dependent routes and route stoppages
+        await _busStationRepo.DeleteBusStationWithDependenciesAsync(busStation);
     }
 
 

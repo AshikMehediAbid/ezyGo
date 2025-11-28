@@ -5,7 +5,9 @@ namespace ezyGo.Admin.Storage.Entities;
 public class BusStationEntity
 {
     public int Id { get; set; }
-    public string StationName { get; set; }
-    public string StationDescription { get; set; }
-    public Geo Geo { get; set; }
+    public string StationName { get; set; } = string.Empty;
+    public string StationDescription { get; set; } = string.Empty;
+    public Geo? Geo { get; set; }
+
+    public ICollection<RouteStoppageEntity> RouteStoppages { get; set; } = [];
 }
