@@ -20,15 +20,20 @@ public class RouteController : ControllerBase
 
     [HttpPost]
     [Route("add")]
-    public async Task<IActionResult> CreateRoute(Domain.Models.Route route)
+    public async Task<IActionResult> CreateRoute([FromBody] Domain.Models.Route route)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         try
         {
-            await _routeService.CreateRouteAsync(route);
-            return Ok(route);
+            var createdRoute =  await _routeService.CreateRouteAsync(route);
+            return Ok(createdRoute);
+        }
+        catch (AlreadyExistException ex)
+        {
+            _logger.LogInformation(ex, "This route is already exist");
+            return Ok(ex.Message);
         }
         catch (Exception ex)
         {
@@ -39,7 +44,7 @@ public class RouteController : ControllerBase
 
     [HttpPut]
     [Route("update")]
-    public async Task<IActionResult> UpdateRoute(Domain.Models.Route route)
+    public async Task<IActionResult> UpdateRoute([FromBody] Domain.Models.Route route)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ezyGo.Admin.Storage.Sql;
 
@@ -11,9 +12,11 @@ using ezyGo.Admin.Storage.Sql;
 namespace ezyGo.Admin.Storage.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    partial class AdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251128092137_update-station-route-relationshi")]
+    partial class updatestationrouterelationshi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,7 +163,7 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     b.HasIndex("RouteEntityId");
 
-                    b.ToTable("RouteStoppages", (string)null);
+                    b.ToTable("RouteStoppages");
                 });
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.TrainStation", b =>
@@ -240,7 +243,7 @@ namespace ezyGo.Admin.Storage.Migrations
                     b.HasOne("ezyGo.Admin.Storage.Entities.BusStationEntity", "BusStationEntity")
                         .WithMany("RouteStoppages")
                         .HasForeignKey("BusStationEntityId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ezyGo.Admin.Storage.Entities.RouteEntity", "RouteEntity")

@@ -17,10 +17,18 @@ public class RouteService : IRouteService
         _mapper = mapper;
     }
 
-    public async Task CreateRouteAsync(Route route)
+    public async Task<Route> CreateRouteAsync(Route route)
     {
+        var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.id, route.EndingPoint.id);
+
+        if (isExist)
+            throw new AlreadyExistException($"The route \"{route.StartingPoint.StationName}\" - \"{route.EndingPoint.StationName}\"");
+
         var routeEntity = _mapper.Map<RouteEntity>(route);
-        await _routeRepo.AddAsync(routeEntity);
+
+        var createdRoute = await _routeRepo.CreateRouteAsync(routeEntity);
+
+        return _mapper.Map<Route>(createdRoute);
     }
 
     public async Task DeleteRouteAsync(int id)
@@ -43,7 +51,7 @@ public class RouteService : IRouteService
 
     public async Task<IEnumerable<Route>> GetRoutesAsync(string? filter)
     {
-        var routes = await _routeRepo.GetAllAsync();
+        List<RouteEntity> routes = await _routeRepo.GetRoutesAsync(filter);
         return _mapper.Map<IEnumerable<Route>>(routes);
     }
 

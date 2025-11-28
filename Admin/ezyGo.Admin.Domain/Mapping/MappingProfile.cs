@@ -17,7 +17,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(d => d.BusCompanyEntityId,
                opt => opt.MapFrom(src => src.BusCompanyId));
-           // .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Company));
+        // .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Company));
 
         CreateMap<BusEntity, Bus>()
             .ForMember(d => d.BusCompanyId,
@@ -42,7 +42,16 @@ public class MappingProfile : Profile
         CreateMap<ezyGo.Admin.Storage.Entities.Geo, ezyGo.Admin.Domain.Models.Geo>();
 
         //Map Route
-        CreateMap<Route, RouteEntity>().ReverseMap();
+        CreateMap<Route, RouteEntity>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.StartingPointId, opt => opt.MapFrom(src => src.StartingPoint.id))
+            .ForMember(dest => dest.EndingPointId, opt => opt.MapFrom(src => src.EndingPoint.id))
+            .ForMember(dest => dest.StartingPoint, opt => opt.Ignore())
+            .ForMember(dest => dest.EndingPoint, opt => opt.Ignore());
+
+        CreateMap<RouteEntity, Route>()
+            .ForMember(dest => dest.StartingPoint, opt => opt.MapFrom(src => src.StartingPoint))
+            .ForMember(dest => dest.EndingPoint, opt => opt.MapFrom(src => src.EndingPoint));
 
     }
 }

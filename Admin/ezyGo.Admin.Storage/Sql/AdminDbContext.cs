@@ -12,6 +12,8 @@ public class AdminDbContext : DbContext
     public DbSet<BusStationEntity> BusStations { get; set; }
     public DbSet<BusCompanyEntity> BusCompanies { get; set; }
     public DbSet<BusEntity> Buses { get; set; }
+    public DbSet<RouteEntity> Routes { get; set; }
+    public DbSet<RouteStoppageEntity> RouteStoppages { get; set; }
 
 
 
@@ -21,5 +23,7 @@ public class AdminDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<BusEntity>(BusMapping.Configure);
+        modelBuilder.Entity<RouteEntity>(RouteMapping.Configure);
+        modelBuilder.Entity<RouteStoppageEntity>(RouteStoppageMapping.Configure);
     }
 }

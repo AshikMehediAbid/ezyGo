@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ezyGo.Admin.Storage.Sql;
 
@@ -11,9 +12,11 @@ using ezyGo.Admin.Storage.Sql;
 namespace ezyGo.Admin.Storage.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    partial class AdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251128053013_add-Route-stoppage-table")]
+    partial class addRoutestoppagetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,7 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("EndingPointId")
+                    b.Property<int?>("EndingingPointId")
                         .HasColumnType("int");
 
                     b.Property<int?>("StartingPointId")
@@ -130,11 +133,11 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EndingPointId");
+                    b.HasIndex("EndingingPointId");
 
                     b.HasIndex("StartingPointId");
 
-                    b.ToTable("Routes", (string)null);
+                    b.ToTable("Routes");
                 });
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.RouteStoppageEntity", b =>
@@ -160,7 +163,7 @@ namespace ezyGo.Admin.Storage.Migrations
 
                     b.HasIndex("RouteEntityId");
 
-                    b.ToTable("RouteStoppages", (string)null);
+                    b.ToTable("RouteStoppages");
                 });
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.TrainStation", b =>
@@ -220,17 +223,15 @@ namespace ezyGo.Admin.Storage.Migrations
 
             modelBuilder.Entity("ezyGo.Admin.Storage.Entities.RouteEntity", b =>
                 {
-                    b.HasOne("ezyGo.Admin.Storage.Entities.BusStationEntity", "EndingPoint")
+                    b.HasOne("ezyGo.Admin.Storage.Entities.BusStationEntity", "EndingingPoint")
                         .WithMany()
-                        .HasForeignKey("EndingPointId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("EndingingPointId");
 
                     b.HasOne("ezyGo.Admin.Storage.Entities.BusStationEntity", "StartingPoint")
                         .WithMany()
-                        .HasForeignKey("StartingPointId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("StartingPointId");
 
-                    b.Navigation("EndingPoint");
+                    b.Navigation("EndingingPoint");
 
                     b.Navigation("StartingPoint");
                 });
@@ -240,7 +241,7 @@ namespace ezyGo.Admin.Storage.Migrations
                     b.HasOne("ezyGo.Admin.Storage.Entities.BusStationEntity", "BusStationEntity")
                         .WithMany("RouteStoppages")
                         .HasForeignKey("BusStationEntityId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ezyGo.Admin.Storage.Entities.RouteEntity", "RouteEntity")
