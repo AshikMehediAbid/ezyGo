@@ -14,16 +14,21 @@ public class RouteRepository : GenericRepository<RouteEntity>, IRouteRepository
         _db = db;
     }
 
+    private IQueryable<RouteEntity> BuildRouteDetailsQuery()
+    {
+        return _db.Routes
+            .Include(r => r.StartingPoint)
+            .Include(r => r.EndingPoint)
+            .Include(r => r.Stoppages)
+                .ThenInclude(s => s.BusStationEntity);
+    }
+
     public async Task<RouteEntity> CreateRouteAsync(RouteEntity route)
     {
         await _db.Routes.AddAsync(route);
         await _db.SaveChangesAsync();
 
-        var createdRoute = await _db.Routes
-            .Include(r => r.StartingPoint)
-            .Include(r => r.EndingPoint)
-            .Include(r => r.Stoppages)
-                .ThenInclude(s => s.BusStationEntity)
+        var createdRoute = await BuildRouteDetailsQuery()
             .FirstOrDefaultAsync(r => r.Id == route.Id);
 
         return createdRoute!;
@@ -31,18 +36,15 @@ public class RouteRepository : GenericRepository<RouteEntity>, IRouteRepository
 
     public async Task<List<RouteEntity>> GetRoutesAsync(string? filter)
     {
-        var routesQuery = _db.Routes
-            .Include(r=>r.StartingPoint)
-            .Include(r=>r.EndingPoint)
-            .Include(r => r.Stoppages)
+        var routesQuery = BuildRouteDetailsQuery()
             .AsNoTracking()
             .AsQueryable();
 
         if (!string.IsNullOrEmpty(filter))
         {
             routesQuery = routesQuery.Where(r =>
-                r.StartingPoint.StationName.Contains(filter) ||
-                r.EndingPoint.StationName.Contains(filter));
+                (r.StartingPoint != null && r.StartingPoint.StationName.Contains(filter)) ||
+                (r.EndingPoint != null && r.EndingPoint.StationName.Contains(filter)));
         }
 
         var routesEntities = await routesQuery.ToListAsync();
@@ -55,5 +57,14 @@ public class RouteRepository : GenericRepository<RouteEntity>, IRouteRepository
             .AnyAsync(r => r.StartingPointId == startId && r.EndingPointId == endId);
 
         return isExist;
+    }
+
+    public async Task<RouteEntity?> GetRouteByIdWithDetailsAsync(int id)
+    {
+        var route = await BuildRouteDetailsQuery()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == id);
+
+        return route;
     }
 }

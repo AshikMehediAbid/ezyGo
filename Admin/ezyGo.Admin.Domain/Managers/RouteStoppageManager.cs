@@ -28,7 +28,7 @@ public class RouteStoppageManager : IRouteStoppageManager
         var stoppageEntity = _mapper.Map<RouteStoppageEntity>(model);
         var stoppage = await _repo.InsertAtEndAsync(stoppageEntity);
 
-        return _mapper.Map<RouteStoppage>(stoppageEntity);
+        return _mapper.Map<RouteStoppage>(stoppage);
     }
 
     public async Task<RouteStoppage> AddStoppageMiddleAsync(int routeId, int stationId, int insertAfterOrder)

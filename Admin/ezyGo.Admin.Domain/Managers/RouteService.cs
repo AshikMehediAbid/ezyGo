@@ -21,31 +21,47 @@ public class RouteService : IRouteService
 
     public async Task<Route> CreateRouteAsync(Route route)
     {
-        var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.id, route.EndingPoint.id);
+        if (route.StartingPoint == null || route.EndingPoint == null)
+            throw new ArgumentException("Route must include both starting and ending stations.");
+
+        var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.Id, route.EndingPoint.Id);
 
         if (isExist)
             throw new AlreadyExistException($"The route \"{route.StartingPoint.StationName}\" - \"{route.EndingPoint.StationName}\"");
 
         var routeEntity = _mapper.Map<RouteEntity>(route);
-         
+
         var createdRoute = await _routeRepo.CreateRouteAsync(routeEntity);
 
+        await AddStartingStoppageAsync(createdRoute);
+        await AddEndingStoppageAsync(createdRoute);
+
+        var routeWithDetails = await _routeRepo.GetRouteByIdWithDetailsAsync(createdRoute.Id) ?? createdRoute;
+
+        return _mapper.Map<Route>(routeWithDetails);
+    }
+
+    private async Task AddStartingStoppageAsync(RouteEntity createdRoute)
+    {
         var startStoppage = new RouteStoppage
         {
             Id = 0,
             RouteId = createdRoute.Id,
             StationId = createdRoute.StartingPointId ?? 0,
         };
+        await _stoppageManager.AddStoppageEndAsync(startStoppage);
+    }
+
+    private async Task AddEndingStoppageAsync(RouteEntity createdRoute)
+    {
         var endStoppage = new RouteStoppage
         {
             Id = 0,
             RouteId = createdRoute.Id,
             StationId = createdRoute.EndingPointId ?? 0,
         };
-        await _stoppageManager.AddStoppageEndAsync(startStoppage);
-        await _stoppageManager.AddStoppageEndAsync(endStoppage);
 
-        return _mapper.Map<Route>(createdRoute);
+        await _stoppageManager.AddStoppageEndAsync(endStoppage);
     }
 
     public async Task DeleteRouteAsync(int id)
@@ -59,7 +75,7 @@ public class RouteService : IRouteService
 
     public async Task<Route> GetRouteByIdAsync(int id)
     {
-        var routeEntity = await _routeRepo.GetByIdAsync(id);
+        var routeEntity = await _routeRepo.GetRouteByIdWithDetailsAsync(id);
         if (routeEntity == null)
             throw new NotFoundException($"Route with id {id} not found");
 
