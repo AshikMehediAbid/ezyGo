@@ -53,5 +53,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.StartingPoint, opt => opt.MapFrom(src => src.StartingPoint))
             .ForMember(dest => dest.EndingPoint, opt => opt.MapFrom(src => src.EndingPoint));
 
+
+        // Map Stoppage
+        CreateMap<RouteStoppage, RouteStoppageEntity>()
+            .ForMember(dest => dest.BusStationEntityId, opt => opt.MapFrom(src => src.StationId))
+            .ForMember(dest => dest.RouteEntityId, opt => opt.MapFrom(src => src.RouteId));
+
+        CreateMap<RouteStoppageEntity, RouteStoppage>()
+            .ForMember(dest => dest.StationId, opt => opt.MapFrom(src => src.BusStationEntityId))
+            .ForMember(dest => dest.RouteId, opt => opt.MapFrom(src => src.RouteEntityId));
     }
 }

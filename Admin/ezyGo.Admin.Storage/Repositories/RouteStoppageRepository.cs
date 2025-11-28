@@ -75,4 +75,12 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
     {
         throw new NotImplementedException();
     }
+
+    public async Task<bool> IsStoppageAlreadyExist(int routeId, int stationId)
+    {
+        bool isEist = await _db.RouteStoppages
+            .AnyAsync(rs => rs.RouteEntityId == routeId && rs.BusStationEntityId == stationId);
+
+        return isEist;
+    }
 }

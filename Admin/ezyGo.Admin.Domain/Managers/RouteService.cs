@@ -11,10 +11,12 @@ public class RouteService : IRouteService
 {
     private readonly IRouteRepository _routeRepo;
     private readonly IMapper _mapper;
-    public RouteService(IRouteRepository routeRepo, IMapper mapper)
+    private readonly IRouteStoppageManager _stoppageManager;
+    public RouteService(IRouteRepository routeRepo, IMapper mapper, IRouteStoppageManager stoppageManager)
     {
         _routeRepo = routeRepo;
         _mapper = mapper;
+        _stoppageManager = stoppageManager;
     }
 
     public async Task<Route> CreateRouteAsync(Route route)
@@ -25,8 +27,23 @@ public class RouteService : IRouteService
             throw new AlreadyExistException($"The route \"{route.StartingPoint.StationName}\" - \"{route.EndingPoint.StationName}\"");
 
         var routeEntity = _mapper.Map<RouteEntity>(route);
-
+         
         var createdRoute = await _routeRepo.CreateRouteAsync(routeEntity);
+
+        var startStoppage = new RouteStoppage
+        {
+            Id = 0,
+            RouteId = createdRoute.Id,
+            StationId = createdRoute.StartingPointId ?? 0,
+        };
+        var endStoppage = new RouteStoppage
+        {
+            Id = 0,
+            RouteId = createdRoute.Id,
+            StationId = createdRoute.EndingPointId ?? 0,
+        };
+        await _stoppageManager.AddStoppageEndAsync(startStoppage);
+        await _stoppageManager.AddStoppageEndAsync(endStoppage);
 
         return _mapper.Map<Route>(createdRoute);
     }
