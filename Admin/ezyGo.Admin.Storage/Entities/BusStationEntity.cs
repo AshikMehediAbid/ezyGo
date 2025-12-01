@@ -10,4 +10,8 @@ public class BusStationEntity
     public Geo? Geo { get; set; }
 
     public ICollection<RouteStoppageEntity> RouteStoppages { get; set; } = [];
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 }

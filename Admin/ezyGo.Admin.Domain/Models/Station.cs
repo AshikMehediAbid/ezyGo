@@ -6,6 +6,10 @@ public class Station
     public string StationName { get; set; } = string.Empty;
     public string StationDescription { get; set; } = string.Empty;
     public Geo? Geo { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 }
 
 public class Geo

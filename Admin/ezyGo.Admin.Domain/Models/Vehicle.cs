@@ -8,4 +8,8 @@ public class Vehicle
     public int TotalSeat { get; set; }
     public ICollection<VehicleStation> TrainStations { get; set; } = new List<VehicleStation>();
 
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
+
 }

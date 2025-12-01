@@ -10,5 +10,9 @@ public class VehicleStation
     public int StationId { get; set; }
     public Station Station { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
+
 
 }

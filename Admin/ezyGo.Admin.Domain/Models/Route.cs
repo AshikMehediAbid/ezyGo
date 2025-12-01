@@ -13,5 +13,9 @@ public class Route
     public Station EndingPoint { get; set; } = null!;
 
     public IList<RouteStoppage> Stoppages { get; set; } = [];
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 }
 

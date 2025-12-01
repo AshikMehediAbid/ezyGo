@@ -9,4 +9,8 @@ public class RouteEntity
     public BusStationEntity? EndingPoint { get; set; }
 
     public ICollection<RouteStoppageEntity> Stoppages { get; set; } = [];
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 }

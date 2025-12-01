@@ -13,4 +13,6 @@ public class Bus
     public int BusCompanyId { get; set; }
     public string CompanyName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 }
