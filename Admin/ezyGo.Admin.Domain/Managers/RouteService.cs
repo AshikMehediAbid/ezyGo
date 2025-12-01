@@ -11,15 +11,20 @@ public class RouteService : IRouteService
 {
     private readonly IRouteRepository _routeRepo;
     private readonly IMapper _mapper;
-    public RouteService(IRouteRepository routeRepo, IMapper mapper)
+    private readonly IRouteStoppageManager _stoppageManager;
+    public RouteService(IRouteRepository routeRepo, IMapper mapper, IRouteStoppageManager stoppageManager)
     {
         _routeRepo = routeRepo;
         _mapper = mapper;
+        _stoppageManager = stoppageManager;
     }
 
     public async Task<Route> CreateRouteAsync(Route route)
     {
-        var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.id, route.EndingPoint.id);
+        if (route.StartingPoint == null || route.EndingPoint == null)
+            throw new ArgumentException("Route must include both starting and ending stations.");
+
+        var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.Id, route.EndingPoint.Id);
 
         if (isExist)
             throw new AlreadyExistException($"The route \"{route.StartingPoint.StationName}\" - \"{route.EndingPoint.StationName}\"");
@@ -28,7 +33,35 @@ public class RouteService : IRouteService
 
         var createdRoute = await _routeRepo.CreateRouteAsync(routeEntity);
 
-        return _mapper.Map<Route>(createdRoute);
+        await AddStartingStoppageAsync(createdRoute);
+        await AddEndingStoppageAsync(createdRoute);
+
+        var routeWithDetails = await _routeRepo.GetRouteByIdWithDetailsAsync(createdRoute.Id) ?? createdRoute;
+
+        return _mapper.Map<Route>(routeWithDetails);
+    }
+
+    private async Task AddStartingStoppageAsync(RouteEntity createdRoute)
+    {
+        var startStoppage = new RouteStoppage
+        {
+            Id = 0,
+            RouteId = createdRoute.Id,
+            StationId = createdRoute.StartingPointId ?? 0,
+        };
+        await _stoppageManager.AddStoppageEndAsync(startStoppage);
+    }
+
+    private async Task AddEndingStoppageAsync(RouteEntity createdRoute)
+    {
+        var endStoppage = new RouteStoppage
+        {
+            Id = 0,
+            RouteId = createdRoute.Id,
+            StationId = createdRoute.EndingPointId ?? 0,
+        };
+
+        await _stoppageManager.AddStoppageEndAsync(endStoppage);
     }
 
     public async Task DeleteRouteAsync(int id)
@@ -42,7 +75,7 @@ public class RouteService : IRouteService
 
     public async Task<Route> GetRouteByIdAsync(int id)
     {
-        var routeEntity = await _routeRepo.GetByIdAsync(id);
+        var routeEntity = await _routeRepo.GetRouteByIdWithDetailsAsync(id);
         if (routeEntity == null)
             throw new NotFoundException($"Route with id {id} not found");
 

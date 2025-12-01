@@ -9,4 +9,5 @@ public interface IRouteStoppageRepository
     Task<RouteStoppageEntity> InsertInMiddleAsync(int routeId, int stationId, int insertAfterOrder);
     Task<bool> ReorderAsync(int routeId, List<int> stationIds);
     Task<bool> DeleteAsync(int id);
+    Task<bool> IsStoppageAlreadyExist(int routeId, int stationId);
 }

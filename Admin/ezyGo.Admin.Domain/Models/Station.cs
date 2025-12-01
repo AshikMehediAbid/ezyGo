@@ -2,7 +2,7 @@
 
 public class Station
 {
-    public int id { get; set; }
+    public int Id { get; set; }
     public string StationName { get; set; } = string.Empty;
     public string StationDescription { get; set; } = string.Empty;
     public Geo? Geo { get; set; }

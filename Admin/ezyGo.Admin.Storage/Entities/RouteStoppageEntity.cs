@@ -3,7 +3,6 @@
 public class RouteStoppageEntity
 {
     public int Id { get; set; }
-
     public int RouteEntityId { get; set; }
     public RouteEntity? RouteEntity { get; set; }
 

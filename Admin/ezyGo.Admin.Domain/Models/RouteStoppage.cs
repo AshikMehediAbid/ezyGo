@@ -6,4 +6,5 @@ public class RouteStoppage
     public int RouteId { get; set; }
     public int StationId { get; set; }
     public int Order { get; set; }
+    public Station? Station { get; set; }
 }

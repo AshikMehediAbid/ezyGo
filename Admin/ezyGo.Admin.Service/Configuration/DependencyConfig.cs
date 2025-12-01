@@ -28,6 +28,9 @@ public static class DependencyConfig
         services.AddScoped<IRouteRepository, RouteRepository>();
         services.AddScoped<IRouteService, RouteService>();
 
+        services.AddScoped<IRouteStoppageManager, RouteStoppageManager>();
+        services.AddScoped<IRouteStoppageRepository, RouteStoppageRepository>();
+
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 

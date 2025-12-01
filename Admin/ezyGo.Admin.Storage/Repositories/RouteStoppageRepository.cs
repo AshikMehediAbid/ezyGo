@@ -17,8 +17,10 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
     public async Task<IEnumerable<RouteStoppageEntity>> GetByRouteIdAsync(int routeId)
     {
         var stoppages = await _db.RouteStoppages
+            .Include(x => x.BusStationEntity)
             .Where(x => x.RouteEntityId == routeId)
             .OrderBy(x => x.Order)
+            .AsNoTracking()
             .ToListAsync();
 
         return stoppages;
@@ -45,6 +47,7 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
 
         _db.RouteStoppages.Add(entity);
         await _db.SaveChangesAsync();
+        await _db.Entry(entity).Reference(e => e.BusStationEntity).LoadAsync();
 
         return entity;
     }
@@ -67,6 +70,7 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
 
         _db.RouteStoppages.Add(entity);
         await _db.SaveChangesAsync();
+        await _db.Entry(entity).Reference(e => e.BusStationEntity).LoadAsync();
 
         return entity;
     }
@@ -74,5 +78,13 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
     public Task<bool> ReorderAsync(int routeId, List<int> stationIds)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> IsStoppageAlreadyExist(int routeId, int stationId)
+    {
+        bool isEist = await _db.RouteStoppages
+            .AnyAsync(rs => rs.RouteEntityId == routeId && rs.BusStationEntityId == stationId);
+
+        return isEist;
     }
 }

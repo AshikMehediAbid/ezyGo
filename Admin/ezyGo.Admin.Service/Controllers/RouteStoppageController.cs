@@ -1,5 +1,6 @@
 ﻿using ezyGo.Admin.Domain.Interfaces;
 using ezyGo.Admin.Domain.Models;
+using ezyGo.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +43,10 @@ public class RouteStoppageController : ControllerBase
             var stoppages = await _manager.AddStoppageEndAsync(model);
             return Ok(model);
         }
+        catch (AlreadyExistException ex)
+        {
+            return Ok(ex.Message);
+        }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
@@ -52,8 +57,19 @@ public class RouteStoppageController : ControllerBase
     [Route("add-middle")]
     public async Task<IActionResult> AddMiddle(int routeId, int stationId, int insertAfterOrder)
     {
-        var stoppage = await _manager.AddStoppageMiddleAsync(routeId, stationId, insertAfterOrder);
-        return Ok(stoppage);
+        try
+        {
+            var stoppage = await _manager.AddStoppageMiddleAsync(routeId, stationId, insertAfterOrder);
+            return Ok(stoppage);
+        }
+        catch(AlreadyExistException ex)
+        {
+            return Ok(ex.Message);
+        }
+        catch (Exception ex )
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("reorder")]
