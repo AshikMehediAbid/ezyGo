@@ -3,7 +3,7 @@
 public class TripTemplateModel
 {
     public int Id { get; set; }
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     public int? BusId { get; set; }
     public Bus? Bus { get; set; }
