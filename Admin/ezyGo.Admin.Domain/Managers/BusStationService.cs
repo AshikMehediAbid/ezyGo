@@ -22,6 +22,9 @@ public class BusStationService : IBusStationService
 
     public async Task CreateBusStationAsync(Station station)
     {
+        station.CreatedAt = DateTime.UtcNow;
+        station.UpdatedAt = DateTime.UtcNow;
+
         var busStationEntity = _mapper.Map<BusStationEntity>(station);
         await _busStationRepo.AddAsync(busStationEntity);
     }
@@ -60,6 +63,8 @@ public class BusStationService : IBusStationService
 
     public async Task UpdateBusStationAsync(Station station)
     {
+        station.UpdatedAt = DateTime.UtcNow;
+
         var stationEntity = _mapper.Map<BusStationEntity>(station);
         await _busStationRepo.UpdateAsync(stationEntity);
     }

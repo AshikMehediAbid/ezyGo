@@ -9,36 +9,50 @@ namespace ezyGo.Admin.Domain.Managers;
 
 public class RouteStoppageManager : IRouteStoppageManager
 {
-    private readonly IRouteStoppageRepository _repo;
+    private readonly IRouteStoppageRepository _stoppageRepo;
+    private readonly IRouteRepository _routeRepo;
+    private IBusStationRepository _stationRepo;
     private readonly IMapper _mapper;
 
-    public RouteStoppageManager(IRouteStoppageRepository repo, IMapper mapper)
+    public RouteStoppageManager(IRouteStoppageRepository stoppageRepo, IMapper mapper, IRouteRepository routeRepo, IBusStationRepository stationRepo)
     {
-        _repo = repo;
+        _stoppageRepo = stoppageRepo;
         _mapper = mapper;
+        _routeRepo = routeRepo;
+        _stationRepo = stationRepo;
     }
     public async Task<RouteStoppage> AddStoppageEndAsync(RouteStoppage model)
     {
-        bool isExist = await _repo.IsStoppageAlreadyExist(model.RouteId, model.StationId);
+        bool isExist = await _stoppageRepo.IsStoppageAlreadyExist(model.RouteId, model.StationId);
+
+        await ValidateStation(model.StationId);
+        await ValidateRoute(model.RouteId);
 
         if (isExist)
             throw new AlreadyExistException($"The Stoppage: \"{model.StationId}\" is already assigned in the route \"{model.RouteId}\"");
 
+        model.CreatedAt = DateTime.UtcNow;
+        model.UpdatedAt = DateTime.UtcNow;
 
         var stoppageEntity = _mapper.Map<RouteStoppageEntity>(model);
-        var stoppage = await _repo.InsertAtEndAsync(stoppageEntity);
+        var stoppage = await _stoppageRepo.InsertAtEndAsync(stoppageEntity);
 
         return _mapper.Map<RouteStoppage>(stoppage);
     }
 
+
+
     public async Task<RouteStoppage> AddStoppageMiddleAsync(int routeId, int stationId, int insertAfterOrder)
     {
-        bool isExist = await _repo.IsStoppageAlreadyExist(routeId, stationId);
+        bool isExist = await _stoppageRepo.IsStoppageAlreadyExist(routeId, stationId);
 
         if (isExist)
             throw new AlreadyExistException($"The Stoppage: \"{stationId}\" is already assigned in the route \"{routeId}\"");
 
-        var stoppage = await _repo.InsertInMiddleAsync(routeId, stationId, insertAfterOrder);
+        await ValidateStation(stationId);
+        await ValidateRoute(routeId);
+
+        var stoppage = await _stoppageRepo.InsertInMiddleAsync(routeId, stationId, insertAfterOrder);
 
         return _mapper.Map<RouteStoppage>(stoppage);
     }
@@ -50,7 +64,7 @@ public class RouteStoppageManager : IRouteStoppageManager
 
     public async Task<IEnumerable<RouteStoppage>> GetStoppagesAsync(int routeId)
     {
-        var stoppages = await _repo.GetByRouteIdAsync(routeId);
+        var stoppages = await _stoppageRepo.GetByRouteIdAsync(routeId);
 
         return _mapper.Map<List<RouteStoppage>>(stoppages);
     }
@@ -58,5 +72,23 @@ public class RouteStoppageManager : IRouteStoppageManager
     public Task<bool> ReorderAsync(int routeId, List<int> stationIds)
     {
         throw new NotImplementedException();
+    }
+
+
+
+    private async Task ValidateStation(int stationId)
+    {
+        var isExist = await _stationRepo.IsExistsAsync(stationId);
+
+        if (!isExist)
+            throw new NotFoundException($"Cannot add it as a stoppage, Station with id: {stationId}");
+    }
+
+    private async Task ValidateRoute(int routeId)
+    {
+        var isExist = await _routeRepo.IsExistsAsync(routeId);
+
+        if (!isExist)
+            throw new NotFoundException($"Cannot add stoppage to this route, Route with id: {routeId}");
     }
 }

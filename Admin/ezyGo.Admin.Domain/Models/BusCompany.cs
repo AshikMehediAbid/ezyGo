@@ -9,6 +9,8 @@ public class BusCompany
     public string OwnerName { get; set; } = string.Empty;
     public string RegistrationNo { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
 
     public ICollection<Bus> Buses { get; set; } = new List<Bus>();
 }

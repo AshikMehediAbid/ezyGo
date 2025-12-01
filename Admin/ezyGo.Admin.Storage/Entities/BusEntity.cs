@@ -12,7 +12,10 @@ public class BusEntity
 
     public int? BusCompanyEntityId { get; set; }
     public BusCompanyEntity? Company { get; set; } = null;
-    
+
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
+
 }
 public enum BusType
 {

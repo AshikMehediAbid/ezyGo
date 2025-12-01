@@ -68,5 +68,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.StationId, opt => opt.MapFrom(src => src.BusStationEntityId))
             .ForMember(dest => dest.RouteId, opt => opt.MapFrom(src => src.RouteEntityId))
             .ForMember(dest => dest.Station, opt => opt.MapFrom(src => src.BusStationEntity));
+
+
+
+        // Map TripTemplate
+        CreateMap<TripTemplateModel, TripTemplate>().ReverseMap();
+
+
+
+
     }
 }

@@ -22,4 +22,9 @@ public class BusCompanyEntity
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public ICollection<BusEntity> Buses { get; set; } = new List<BusEntity>();
+
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
+
+
 }

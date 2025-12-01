@@ -31,6 +31,9 @@ public static class DependencyConfig
         services.AddScoped<IRouteStoppageManager, RouteStoppageManager>();
         services.AddScoped<IRouteStoppageRepository, RouteStoppageRepository>();
 
+        services.AddScoped<ITripTemplateRepository, TripTemplateRepository>();
+        services.AddScoped<ITripTemplateService, TripTemplateService>();
+
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 

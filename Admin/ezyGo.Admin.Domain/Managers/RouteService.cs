@@ -29,6 +29,9 @@ public class RouteService : IRouteService
         if (isExist)
             throw new AlreadyExistException($"The route \"{route.StartingPoint.StationName}\" - \"{route.EndingPoint.StationName}\"");
 
+        route.CreatedAt = DateTime.UtcNow;
+        route.UpdatedAt = DateTime.UtcNow;
+
         var routeEntity = _mapper.Map<RouteEntity>(route);
 
         var createdRoute = await _routeRepo.CreateRouteAsync(routeEntity);
@@ -48,6 +51,8 @@ public class RouteService : IRouteService
             Id = 0,
             RouteId = createdRoute.Id,
             StationId = createdRoute.StartingPointId ?? 0,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         await _stoppageManager.AddStoppageEndAsync(startStoppage);
     }
@@ -59,6 +64,8 @@ public class RouteService : IRouteService
             Id = 0,
             RouteId = createdRoute.Id,
             StationId = createdRoute.EndingPointId ?? 0,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         await _stoppageManager.AddStoppageEndAsync(endStoppage);
@@ -90,6 +97,7 @@ public class RouteService : IRouteService
 
     public async Task UpdateRouteAsync(Route route)
     {
+        route.UpdatedAt = DateTime.UtcNow;
         var routeEntity = _mapper.Map<RouteEntity>(route);
         await _routeRepo.UpdateAsync(routeEntity);
     }

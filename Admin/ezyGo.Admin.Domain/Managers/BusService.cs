@@ -25,6 +25,7 @@ public class BusService : IBusService
     public async Task<BusCompany> CreateBusCompanyAsync(BusCompany company)
     {
         company.CreatedAt = DateTime.UtcNow;
+        company.UpdatedAt = DateTime.UtcNow;
 
         var busCompanyEntity = _mapper.Map<BusCompanyEntity>(company);
 
@@ -65,6 +66,7 @@ public class BusService : IBusService
         existingCompany.CompanyName = company.CompanyName;
         existingCompany.OwnerName = company.OwnerName;
         existingCompany.RegistrationNo = company.RegistrationNo;
+        existingCompany.UpdatedAt = DateTime.UtcNow;
 
         await _busCompanyRepo.UpdateAsync(existingCompany);
     }
@@ -83,6 +85,7 @@ public class BusService : IBusService
         existingBus.BusRegNo = bus.BusRegNo;
         existingBus.BusType = bus.BusType;
         existingBus.TotalCapacity = bus.TotalCapacity;
+        existingBus.UpdatedAt = DateTime.UtcNow;
 
         await _busRepo.UpdateAsync(existingBus);
     }
@@ -117,6 +120,7 @@ public class BusService : IBusService
     public async Task<Bus> CreateBusAsync(Bus bus)
     {
         bus.CreatedAt = DateTime.UtcNow;
+        bus.UpdatedAt = DateTime.UtcNow;
 
         var isBusCompanyExist = await _busCompanyRepo.IsExistsAsync(bus.BusCompanyId);
 
