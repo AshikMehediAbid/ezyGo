@@ -21,7 +21,7 @@ public class TripTemplateController : ControllerBase
 
     [HttpPost]
     [Route("add")]
-    public async Task<IActionResult> CreatTripTemplate(TripTemplateModel tripTemplate)
+    public async Task<IActionResult> CreateTripTemplate(TripTemplateModel tripTemplate)
     {
         if (!ModelState.IsValid)
         {
