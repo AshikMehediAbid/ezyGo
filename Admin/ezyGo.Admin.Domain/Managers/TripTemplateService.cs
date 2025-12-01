@@ -32,7 +32,7 @@ public class TripTemplateService : ITripTemplateService
 
     public async Task<TripTemplateModel> CreateTripTemplateAsync(TripTemplateModel tripTemplate)
     {
-        if (tripTemplate.Route == null || tripTemplate.Route.Id <= 0)
+        if (tripTemplate.Route == null || tripTemplate.RouteId <= 0)
             throw new ArgumentException("RouteId cannot be null.");
 
         var route = await GetRouteAsync(tripTemplate.RouteId!.Value);

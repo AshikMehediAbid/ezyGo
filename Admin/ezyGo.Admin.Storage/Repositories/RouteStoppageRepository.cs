@@ -54,6 +54,13 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
 
     public async Task<RouteStoppageEntity> InsertInMiddleAsync(int routeId, int stationId, int insertAfter)
     {
+        // Get the max existing order
+        var maxOrder = await _db.RouteStoppages
+            .Where(x => x.RouteEntityId == routeId)
+            .MaxAsync(x => (int?)x.Order) ?? 0;
+
+        insertAfter = Math.Min(insertAfter, maxOrder);
+
         var list = await _db.RouteStoppages
             .Where(x => x.RouteEntityId == routeId && x.Order > insertAfter)
             .ToListAsync();
@@ -65,7 +72,9 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
         {
             RouteEntityId = routeId,
             BusStationEntityId = stationId,
-            Order = insertAfter + 1
+            Order = insertAfter + 1,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _db.RouteStoppages.Add(entity);
