@@ -209,7 +209,7 @@ public class RouteServiceTests
             Id = routeId,
             StartingPoint = new BusStationEntity { Id = 1, StationName = "Start" },
             EndingPoint = new BusStationEntity { Id = 2, StationName = "End" },
-            Stoppages = new List<RouteStoppageEntity>()
+            Stoppages = []
         };
 
         var expectedRoute = new Route
@@ -285,7 +285,7 @@ public class RouteServiceTests
         var emptyList = new List<RouteEntity>();
 
         _mockRouteRepo.Setup(r => r.GetRoutesAsync(It.IsAny<string>())).ReturnsAsync(emptyList);
-        _mockMapper.Setup(m => m.Map<IEnumerable<Route>>(emptyList)).Returns(new List<Route>());
+        _mockMapper.Setup(m => m.Map<IEnumerable<Route>>(emptyList)).Returns([]);
 
         // Act
         var result = await _service.GetRoutesAsync("filter");
