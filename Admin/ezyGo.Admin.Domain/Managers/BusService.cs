@@ -24,6 +24,10 @@ public class BusService : IBusService
     // ====================  BUS COMPANY  ======================//
     public async Task<BusCompany> CreateBusCompanyAsync(BusCompany company)
     {
+        if (string.IsNullOrEmpty(company.CompanyName))
+        {
+            throw new ArgumentNullException(nameof(company.CompanyName), "Company name can not be null or empty");
+        }
         company.CreatedAt = DateTime.UtcNow;
         company.UpdatedAt = DateTime.UtcNow;
 
