@@ -197,7 +197,7 @@ public class BusServiceTests
     }
 
     [Fact]
-    public async Task BusCompanyUpdateAsync_CompanyNotFound_ThrowsNotFoundException()
+    public async Task BusCompany_UpdateAsync_CompanyNotFound_ThrowsNotFoundException()
     {
         // Arrange
         var companyId = 1;
@@ -308,7 +308,7 @@ public class BusServiceTests
 
 
     [Fact]
-    public async Task Buses_GetAllAsync_WithFilter_ReturnsBuses()
+    public async Task Bus_GetAllAsync_WithFilter_ReturnsBuses()
     {
         // Arrange
         var filter = "test";
