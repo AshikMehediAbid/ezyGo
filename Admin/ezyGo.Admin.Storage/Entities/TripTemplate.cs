@@ -17,11 +17,11 @@ public class TripTemplate
 
     [Required]
     [DataType(DataType.DateTime)]
-    public DateTime DepartureTime { get; set; }
+    public TimeOnly DepartureTime { get; set; }
 
     [Required]
     [DataType(DataType.DateTime)]
-    public DateTime ArrivalTime { get; set; }
+    public TimeOnly ArrivalTime { get; set; }
 
     public string Stoppages { get; set; } = String.Empty;
 

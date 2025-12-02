@@ -59,7 +59,7 @@ public class TripTemplateRepository : GenericRepository<TripTemplate>, ITripTemp
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    public async Task<bool> IsTripTemplateExistAsync(int routeId, int? busId, int baseFare, DateTime departureTime, DateTime arrivalTime)
+    public async Task<bool> IsTripTemplateExistAsync(int routeId, int? busId, int baseFare, TimeOnly departureTime, TimeOnly arrivalTime)
     {
         var query = _db.TripTemplates.AsQueryable();
 
