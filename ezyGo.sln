@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Core", "Core\ezygo.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.EntityFrameworkCore", "Core\ezyGo.EntityFrameworkCore\ezyGo.EntityFrameworkCore.csproj", "{672DAA31-2C3A-4756-B7D0-F2D74D64382D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Admin.Test", "Admin\ezyGo.Admin.Test\ezyGo.Admin.Test.csproj", "{2DC16682-A039-434B-8996-362FA5F34D50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{672DAA31-2C3A-4756-B7D0-F2D74D64382D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672DAA31-2C3A-4756-B7D0-F2D74D64382D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672DAA31-2C3A-4756-B7D0-F2D74D64382D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC16682-A039-434B-8996-362FA5F34D50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC16682-A039-434B-8996-362FA5F34D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC16682-A039-434B-8996-362FA5F34D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC16682-A039-434B-8996-362FA5F34D50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +153,7 @@ Global
 		{12DD0D86-6482-47D1-B049-707A75DB097D} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
 		{BD4B8E26-4591-44CA-9D57-7B051510A33C} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
 		{672DAA31-2C3A-4756-B7D0-F2D74D64382D} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
+		{2DC16682-A039-434B-8996-362FA5F34D50} = {D4FB2F28-95EB-4D0F-A9B0-FD48FA8EBCDA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F974680-2C72-4A69-986B-803F9B7AB4AA}

@@ -12,17 +12,21 @@ public class RouteService : IRouteService
     private readonly IRouteRepository _routeRepo;
     private readonly IMapper _mapper;
     private readonly IRouteStoppageManager _stoppageManager;
-    public RouteService(IRouteRepository routeRepo, IMapper mapper, IRouteStoppageManager stoppageManager)
+    private readonly IBusStationRepository _stationRepo;
+    public RouteService(IRouteRepository routeRepo, IMapper mapper, IRouteStoppageManager stoppageManager, IBusStationRepository stationRepo)
     {
         _routeRepo = routeRepo;
         _mapper = mapper;
         _stoppageManager = stoppageManager;
+        _stationRepo = stationRepo;
     }
 
     public async Task<Route> CreateRouteAsync(Route route)
     {
         if (route.StartingPoint == null || route.EndingPoint == null)
             throw new ArgumentException("Route must include both starting and ending stations.");
+
+        await ValidateStations(route);
 
         var isExist = await _routeRepo.IsRouteExist(route.StartingPoint.Id, route.EndingPoint.Id);
 
@@ -42,6 +46,15 @@ public class RouteService : IRouteService
         var routeWithDetails = await _routeRepo.GetRouteByIdWithDetailsAsync(createdRoute.Id) ?? createdRoute;
 
         return _mapper.Map<Route>(routeWithDetails);
+    }
+
+    private async Task ValidateStations(Route route)
+    {
+        var isStartingStationExist = await _stationRepo.IsExistsAsync(route.StartingPoint.Id);
+        var isEndingStationExist = await _stationRepo.IsExistsAsync(route.EndingPoint.Id);
+
+        if (!isStartingStationExist || !isEndingStationExist)
+            throw new NotFoundException("To create Route, Start Or End Station");
     }
 
     private async Task AddStartingStoppageAsync(RouteEntity createdRoute)
@@ -97,6 +110,11 @@ public class RouteService : IRouteService
 
     public async Task UpdateRouteAsync(Route route)
     {
+        if (route.StartingPoint == null || route.EndingPoint == null)
+            throw new ArgumentException("Route must include both starting and ending stations.");
+
+        await ValidateStations(route);
+
         route.UpdatedAt = DateTime.UtcNow;
         var routeEntity = _mapper.Map<RouteEntity>(route);
         await _routeRepo.UpdateAsync(routeEntity);

@@ -32,8 +32,8 @@ public class TripTemplateService : ITripTemplateService
 
     public async Task<TripTemplateModel> CreateTripTemplateAsync(TripTemplateModel tripTemplate)
     {
-        if (tripTemplate.Route == null || tripTemplate.RouteId <= 0)
-            throw new ArgumentException("RouteId cannot be null.");
+        if (tripTemplate.RouteId <= 0)
+            throw new ArgumentException("Invalied RouteId.");
 
         var route = await GetRouteAsync(tripTemplate.RouteId!.Value);
         await CheckIsBusExistsAsync(tripTemplate.BusId);
@@ -102,8 +102,8 @@ public class TripTemplateService : ITripTemplateService
             throw new NotFoundException($"Trip template with id {id}");
         }
 
-        if (tripTemplate.Route == null || tripTemplate.Route.Id <= 0)
-            throw new ArgumentException("RouteId cannot be null.");
+        if (tripTemplate.RouteId <= 0)
+            throw new ArgumentException("Invalied RouteId.");
         await CheckIsBusExistsAsync(tripTemplate.BusId);
 
         var route = await GetRouteAsync(tripTemplate.RouteId!.Value);

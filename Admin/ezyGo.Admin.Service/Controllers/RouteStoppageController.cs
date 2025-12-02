@@ -30,6 +30,28 @@ public class RouteStoppageController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Failed to get stoppages for route {RouteId}.", routeId);
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetStoppagesById(int id)
+    {
+        try
+        {
+            var stoppage = await _manager.GetByIdAsync(id);
+            return Ok(stoppage);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogInformation(ex, "Stoppage {StoppageId} not found.", id);
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get stoppage {StoppageId}.", id);
             return BadRequest(ex.Message);
         }
     }
@@ -38,6 +60,9 @@ public class RouteStoppageController : ControllerBase
     [Route("add-end")]
     public async Task<IActionResult> AddAtEnd(RouteStoppage model)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         try
         {
             var stoppages = await _manager.AddStoppageEndAsync(model);
@@ -72,17 +97,79 @@ public class RouteStoppageController : ControllerBase
         }
     }
 
-    [HttpPost("reorder")]
-    public async Task<IActionResult> Reorder(int routeId, List<int> stationIds)
+
+    [HttpPut]
+    [Route("update/{id}")]
+    public async Task<IActionResult> UpdateStoppage(int id, [FromBody] RouteStoppage model)
     {
-        return Ok();
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            await _manager.UpdateAsync(id, model);
+            return NoContent();
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogInformation(ex, "Stoppage {StoppageId} not found for update.", id);
+            return NotFound(ex.Message);
+        }
+        catch (AlreadyExistException ex)
+        {
+            _logger.LogInformation(ex, "Stoppage already exists for route.");
+            return Ok(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update stoppage {StoppageId}.", id);
+            return BadRequest(ex.Message);
+        }
+    }
+
+
+    [HttpPut]
+    [Route("update/{id}/order")]
+    public async Task<IActionResult> UpdateOrder(int id, [FromQuery] int newOrder)
+    {
+        if (newOrder <= 0)
+            return BadRequest("newOrder must be greater than zero.");
+
+        try
+        {
+            await _manager.UpdateOrderAsync(id, newOrder);
+            return NoContent();
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogInformation(ex, "Stoppage {StoppageId} not found for order update.", id);
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update order for stoppage {StoppageId}.", id);
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _manager.DeleteAsync(id);
-        return Ok();
+        try
+        {
+            await _manager.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogInformation(ex, "Stoppage {StoppageId} not found for delete.", id);
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete stoppage {StoppageId}.", id);
+            return BadRequest(ex.Message);
+        }
     }
 
 }

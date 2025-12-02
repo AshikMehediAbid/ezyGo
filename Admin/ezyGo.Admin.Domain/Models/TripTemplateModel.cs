@@ -13,8 +13,8 @@ public class TripTemplateModel
 
     public int BaseFare { get; set; }
 
-    public DateTime DepartureTime { get; set; }
-    public DateTime ArrivalTime { get; set; }
+    public TimeOnly DepartureTime { get; set; }
+    public TimeOnly ArrivalTime { get; set; }
 
     public string? Stoppages { get; set; } = String.Empty;
 

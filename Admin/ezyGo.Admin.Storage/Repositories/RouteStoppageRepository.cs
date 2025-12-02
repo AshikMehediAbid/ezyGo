@@ -25,9 +25,87 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
 
         return stoppages;
     }
-    public Task<bool> DeleteAsync(int id)
+
+    public async Task<bool> UpdateOrderAsync(int id, int newOrder)
     {
-        throw new NotImplementedException();
+        var stoppage = await _db.RouteStoppages
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (stoppage is null)
+            return false;
+
+        var routeId = stoppage.RouteEntityId;
+        var currentOrder = stoppage.Order;
+
+        // Get max order
+        var maxOrder = await _db.RouteStoppages
+            .Where(x => x.RouteEntityId == routeId)
+            .MaxAsync(x => (int?)x.Order) ?? 0;
+
+        newOrder = Math.Max(1, newOrder);
+        newOrder = Math.Min(maxOrder, newOrder);
+
+        if (newOrder == currentOrder)
+            return true;
+
+        if (newOrder > currentOrder)
+        {
+            // decrement between (currentOrder, newOrder]
+            var affected = await _db.RouteStoppages
+                .Where(x => x.RouteEntityId == routeId &&
+                            x.Order > currentOrder &&
+                            x.Order <= newOrder)
+                .ToListAsync();
+
+            foreach (var s in affected)
+                s.Order--;
+        }
+        else
+        {
+            // increment between [newOrder, currentOrder)
+            var affected = await _db.RouteStoppages
+                .Where(x => x.RouteEntityId == routeId &&
+                            x.Order >= newOrder &&
+                            x.Order < currentOrder)
+                .ToListAsync();
+
+            foreach (var s in affected)
+                s.Order++;
+        }
+
+        stoppage.Order = newOrder;
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var stoppage = await _db.RouteStoppages
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (stoppage is null)
+            return false;
+
+        var routeId = stoppage.RouteEntityId;
+        var order = stoppage.Order;
+
+        // Remove the stoppage
+        _db.RouteStoppages.Remove(stoppage);
+
+        // Reorder subsequent stoppages to keep the sequence continuous
+        var nextStoppages = await _db.RouteStoppages
+            .Where(x => x.RouteEntityId == routeId && x.Order > order)
+            .ToListAsync();
+
+        foreach (var s in nextStoppages)
+        {
+            s.Order--;
+        }
+
+        await _db.SaveChangesAsync();
+
+        return true;
     }
 
 
@@ -84,10 +162,6 @@ public class RouteStoppageRepository : GenericRepository<RouteStoppageEntity>, I
         return entity;
     }
 
-    public Task<bool> ReorderAsync(int routeId, List<int> stationIds)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<bool> IsStoppageAlreadyExist(int routeId, int stationId)
     {

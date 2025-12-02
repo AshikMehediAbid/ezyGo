@@ -32,9 +32,9 @@ public class BusStationService : IBusStationService
 
     public async Task DeleteBusStationAsync(int id)
     {
-        var busStation = await _busStationRepo.GetByIdAsync(id);
-        if (busStation == null)
+        var busStation = await _busStationRepo.GetByIdAsync(id) ??
             throw new NotFoundException($"Bus Station with id {id}");
+
 
         // Delete station along with all dependent routes and route stoppages
         await _busStationRepo.DeleteBusStationWithDependenciesAsync(busStation);
@@ -43,9 +43,7 @@ public class BusStationService : IBusStationService
 
     public async Task<Station> GetBusStationByIdAsync(int id)
     {
-        var stationEntity = await _busStationRepo.GetByIdAsync(id);
-
-        if (stationEntity == null)
+        var stationEntity = await _busStationRepo.GetByIdAsync(id) ??
             throw new NotFoundException($"Bus Station with id {id}");
 
         var station = _mapper.Map<Station>(stationEntity);
