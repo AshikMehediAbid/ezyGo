@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -52,6 +52,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.EntityFrameworkCore", "Core\ezyGo.EntityFrameworkCore\ezyGo.EntityFrameworkCore.csproj", "{672DAA31-2C3A-4756-B7D0-F2D74D64382D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Admin.Test", "Admin\ezyGo.Admin.Test\ezyGo.Admin.Test.csproj", "{2DC16682-A039-434B-8996-362FA5F34D50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip", "Trip", "{21F51368-6A12-476C-8138-2597AF3EDC44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Trip.Service", "Services\Trip\ezyGo.Trip.Service\ezyGo.Trip.Service.csproj", "{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +131,10 @@ Global
 		{2DC16682-A039-434B-8996-362FA5F34D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC16682-A039-434B-8996-362FA5F34D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DC16682-A039-434B-8996-362FA5F34D50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +162,8 @@ Global
 		{BD4B8E26-4591-44CA-9D57-7B051510A33C} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
 		{672DAA31-2C3A-4756-B7D0-F2D74D64382D} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
 		{2DC16682-A039-434B-8996-362FA5F34D50} = {D4FB2F28-95EB-4D0F-A9B0-FD48FA8EBCDA}
+		{21F51368-6A12-476C-8138-2597AF3EDC44} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A} = {21F51368-6A12-476C-8138-2597AF3EDC44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F974680-2C72-4A69-986B-803F9B7AB4AA}

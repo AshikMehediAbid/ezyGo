@@ -39,7 +39,7 @@ builder.Services.AddLogging(logging =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+/*builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "ezyGo Auth API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new()
@@ -66,12 +66,14 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
+*/
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
