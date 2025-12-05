@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -56,6 +56,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip", "Trip", "{21F51368-6A12-476C-8138-2597AF3EDC44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Trip.Service", "Services\Trip\ezyGo.Trip.Service\ezyGo.Trip.Service.csproj", "{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Trip.Domain", "Services\Trip\ezyGo.Trip.Domain\ezyGo.Trip.Domain.csproj", "{67BC40A7-3397-4C3D-904A-9CBF356D5075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Trip.Storage", "Services\Trip\ezyGo.Trip.Storage\ezyGo.Trip.Storage.csproj", "{76FD66C0-4874-43CC-967E-D33961DCFBD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +139,14 @@ Global
 		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67BC40A7-3397-4C3D-904A-9CBF356D5075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67BC40A7-3397-4C3D-904A-9CBF356D5075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67BC40A7-3397-4C3D-904A-9CBF356D5075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67BC40A7-3397-4C3D-904A-9CBF356D5075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76FD66C0-4874-43CC-967E-D33961DCFBD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76FD66C0-4874-43CC-967E-D33961DCFBD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76FD66C0-4874-43CC-967E-D33961DCFBD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76FD66C0-4874-43CC-967E-D33961DCFBD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +176,8 @@ Global
 		{2DC16682-A039-434B-8996-362FA5F34D50} = {D4FB2F28-95EB-4D0F-A9B0-FD48FA8EBCDA}
 		{21F51368-6A12-476C-8138-2597AF3EDC44} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C4EF3ECA-1053-4BB7-8390-C87302B47F7A} = {21F51368-6A12-476C-8138-2597AF3EDC44}
+		{67BC40A7-3397-4C3D-904A-9CBF356D5075} = {21F51368-6A12-476C-8138-2597AF3EDC44}
+		{76FD66C0-4874-43CC-967E-D33961DCFBD2} = {21F51368-6A12-476C-8138-2597AF3EDC44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F974680-2C72-4A69-986B-803F9B7AB4AA}

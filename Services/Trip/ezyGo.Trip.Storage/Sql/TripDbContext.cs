@@ -1,0 +1,11 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ezyGo.Trip.Storage.Sql;
+
+public class TripDbContext : DbContext
+{
+    public TripDbContext(DbContextOptions<TripDbContext> options) : base(options)
+    {
+    }
+
+}

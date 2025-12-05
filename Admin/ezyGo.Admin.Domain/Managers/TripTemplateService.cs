@@ -73,8 +73,9 @@ public class TripTemplateService : ITripTemplateService
 
     public async Task<IEnumerable<TripTemplateModel>> GetTripTemplatesAsync(string? filter)
     {
-        var templates = await _tripTemplateRepository.GetTripTemplatesWithDetailsAsync(filter);
-        return _mapper.Map<IEnumerable<TripTemplateModel>>(templates);
+        var templatesEntity = await _tripTemplateRepository.GetTripTemplatesWithDetailsAsync(filter);
+        var templates = _mapper.Map<IEnumerable<TripTemplateModel>>(templatesEntity);
+        return templates;
     }
 
 
@@ -171,5 +172,12 @@ public class TripTemplateService : ITripTemplateService
             .ToList();
 
         return stationNames.Count == 0 ? string.Empty : string.Join(" - ", stationNames);
+    }
+
+    public async Task<List<TripTemplateModel>> GetTripTemplatesByCompanyIdAsync(int companyId)
+    {
+        var trips =  await _tripTemplateRepository.GetTripTemplatesByCompanyIdAsync(companyId);
+
+        return _mapper.Map<List<TripTemplateModel>>(trips);
     }
 }

@@ -72,7 +72,12 @@ public class MappingProfile : Profile
 
 
         // Map TripTemplate
-        CreateMap<TripTemplateModel, TripTemplate>().ReverseMap();
+        CreateMap<TripTemplate, TripTemplateModel>()
+            .ForMember(dest => dest.Bus, opt => opt.MapFrom(src => src.BusEntity))
+            .ForMember(dest => dest.Route, opt => opt.MapFrom(src => src.RouteEntity))
+            .ReverseMap()
+            .ForMember(dest => dest.BusEntity, opt => opt.MapFrom(src => src.Bus))
+            .ForMember(dest => dest.RouteEntity, opt => opt.MapFrom(src => src.Route));
 
 
 

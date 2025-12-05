@@ -46,6 +46,16 @@ public class TripTemplateController : ControllerBase
     }
 
 
+    [HttpGet]
+    [Route("by-company/{companyId}")]
+    public async Task<IActionResult> GetTripTemplateByCompanyId(int companyId)
+    {
+        var templates = await _service.GetTripTemplatesByCompanyIdAsync(companyId);
+        return Ok(templates);
+
+    }
+
+
 
     [HttpPost]
     [Route("add")]

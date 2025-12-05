@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\ezyGo.Trip.Domain\ezyGo.Trip.Domain.csproj" />
   </ItemGroup>
 
 </Project>
