@@ -4,5 +4,5 @@ namespace ezyGo.Trip.Domain.Managers.Interface;
 
 public interface ITripService
 {
-    public Task<List<TemplateTripResponse>> GetTemplateTripByCompanyId(int companyId);
+    public Task<List<TemplateTripResponse>> GetTripTemplateByCompanyId(int companyId);
 }

@@ -75,6 +75,11 @@ public class TripTemplateRepository : GenericRepository<TripTemplate>, ITripTemp
 
     public Task<List<TripTemplate?>> GetTripTemplatesByCompanyIdAsync(int companyId)
     {
-        throw new NotImplementedException();
+        var query = BuildTripTemplateDetailsQuery()
+            .Where(t => t.BusEntity != null && t.BusEntity.BusCompanyEntityId == companyId)
+            .AsNoTracking()
+            .AsQueryable();
+
+        return query.ToListAsync();
     }
 }

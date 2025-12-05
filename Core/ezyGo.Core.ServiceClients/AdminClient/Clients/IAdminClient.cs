@@ -4,5 +4,5 @@ namespace ezyGo.Core.ServiceClients.AdminClient.Clients;
 
 public interface IAdminClient
 {
-    Task<List<TripTemplateClientModel>> GetTripTemplateByCompanyId(int companyId);
+    Task<List<TripTemplateClientResponse>> GetTripTemplateByCompanyId(int companyId);
 }

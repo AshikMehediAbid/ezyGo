@@ -1,6 +1,7 @@
 ﻿using ezyGo.Trip.Domain.Managers.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ezyGo.Trip.Service.Controllers;
 
@@ -20,10 +21,17 @@ public class TripController : ControllerBase
 
     [HttpGet]
     [Route("template-trip-by-company/{id}")]
-    public IActionResult GetTemplateTripByCompanyId(int id)
+    public async Task<IActionResult> GetTemplateTripByCompanyId(int id)
     {
-        var templateTrips = _service.GetTemplateTripByCompanyId(id);
+        try
+        {
+            var templateTrips = await _service.GetTripTemplateByCompanyId(id);
 
-        return Ok(new { CompanyId = id, TemplateTrip = "Sample Template Trip Data" });
+            return Ok(templateTrips);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

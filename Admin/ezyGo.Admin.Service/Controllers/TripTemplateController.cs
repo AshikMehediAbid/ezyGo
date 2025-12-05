@@ -50,8 +50,15 @@ public class TripTemplateController : ControllerBase
     [Route("by-company/{companyId}")]
     public async Task<IActionResult> GetTripTemplateByCompanyId(int companyId)
     {
-        var templates = await _service.GetTripTemplatesByCompanyIdAsync(companyId);
-        return Ok(templates);
+        try
+        {
+            var templates = await _service.GetTripTemplatesByCompanyIdAsync(companyId);
+            return Ok(templates);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
     }
 

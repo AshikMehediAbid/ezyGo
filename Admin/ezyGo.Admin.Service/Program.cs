@@ -18,9 +18,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-      app.AddSwaggerConfiguration(builder.Configuration);
-   // app.UseSwagger();
-   // app.UseSwaggerUI();
+   // app.AddSwaggerConfiguration(builder.Configuration);
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

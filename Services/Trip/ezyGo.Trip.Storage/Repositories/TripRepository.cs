@@ -1,12 +1,12 @@
 ﻿using ezyGo.EntityFrameworkCore.Repository;
 using ezyGo.Trip.Storage.Entities;
 using ezyGo.Trip.Storage.Repositories.Interfaces;
+using ezyGo.Trip.Storage.Sql;
 
 namespace ezyGo.Trip.Storage.Repositories;
 
 public class TripRepository : GenericRepository<TemplateTrip>, ITripRepository
 {
-    private readonly TripDbContext _context;
     public TripRepository(TripDbContext context) : base(context)
     {
     }

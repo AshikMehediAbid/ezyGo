@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Core\ezyGo.Core.ServiceClients\ezyGo.Core.ServiceClients.csproj" />
     <ProjectReference Include="..\ezyGo.Trip.Storage\ezyGo.Trip.Storage.csproj" />
   </ItemGroup>

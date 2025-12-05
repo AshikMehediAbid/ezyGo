@@ -11,23 +11,23 @@ public class AdminClient : IAdminClient
     {
         _httpClient = httpClient;
     }
-    public async Task<List<TripTemplateClientModel>> GetTripTemplateByCompanyId(int companyId)
+    public async Task<List<TripTemplateClientResponse>> GetTripTemplateByCompanyId(int companyId)
     {
-        var requestUrl = $"api/admin/trip-templates/by-company-id/{companyId}";
+        var requestUrl = $"api/trip-template/by-company/{companyId}";
 
-        var response = _httpClient.GetAsync(requestUrl);
+        var response = await _httpClient.GetAsync(requestUrl);
 
-        if (!await VerifyApiResponse(response)) return new List<TripTemplateClientModel>();
+        if (!await VerifyApiResponse(response)) return new List<TripTemplateClientResponse>();
 
-        var tripTemplates = await response.Result.Content.ReadFromJsonAsync<List<TripTemplateClientModel>>();
-        return tripTemplates ?? new List<TripTemplateClientModel>();
+        var tripTemplates = await response.Content.ReadFromJsonAsync<List<TripTemplateClientResponse>>();
+        return tripTemplates ?? new List<TripTemplateClientResponse>();
     }
 
-    private async Task<bool> VerifyApiResponse(Task<HttpResponseMessage> response)
+    private async Task<bool> VerifyApiResponse(HttpResponseMessage response)
     {
-        if (!response.Result.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var errorContent = await response.Result.Content.ReadAsStringAsync();
+            var errorContent = await response.Content.ReadAsStringAsync();
             // Log the error content or handle it as needed
             return false;
         }
