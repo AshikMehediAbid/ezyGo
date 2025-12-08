@@ -45,7 +45,7 @@ public static class DependencyConfig
         services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 
         // Initialize DB
-        var connectionString = configuration["ConnectionStrings:DefaultConnection"];
+        var connectionString = configuration["ConnectionStrings:TripConnection"] ?? throw new ArgumentException("Connection string for Trip DB is not correct") ;
         services.AddDbContext<TripDbContext>(options =>
         options.UseSqlServer(connectionString)
         );

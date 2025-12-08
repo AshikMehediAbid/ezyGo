@@ -1,7 +1,6 @@
 ﻿using ezyGo.Trip.Domain.Managers.Interface;
-using Microsoft.AspNetCore.Http;
+using ezyGo.Trip.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ezyGo.Trip.Service.Controllers;
 
@@ -28,6 +27,22 @@ public class TripController : ControllerBase
             var templateTrips = await _service.GetTripTemplateByCompanyId(id);
 
             return Ok(templateTrips);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
+    [HttpPost]
+    [Route("sehedule-trip")]
+    public async Task<IActionResult> ScheduleTrip(TripDetailsModel tripDetails)
+    {
+        try
+        {
+            TripDetailsModel trip = await _service.ScheduleTrip(tripDetails);
+            return Ok();
         }
         catch (Exception ex)
         {

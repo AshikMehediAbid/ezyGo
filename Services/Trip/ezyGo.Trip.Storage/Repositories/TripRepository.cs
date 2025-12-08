@@ -5,7 +5,7 @@ using ezyGo.Trip.Storage.Sql;
 
 namespace ezyGo.Trip.Storage.Repositories;
 
-public class TripRepository : GenericRepository<TemplateTrip>, ITripRepository
+public class TripRepository : GenericRepository<TripDetails>, ITripRepository
 {
     public TripRepository(TripDbContext context) : base(context)
     {

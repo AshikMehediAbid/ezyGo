@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ezyGo.Trip.Domain.Models;
+using ezyGo.Trip.Storage.Entities;
 
 namespace ezyGo.Trip.Domain.Mapping;
 
@@ -39,6 +41,10 @@ public class MappingProfile : Profile
               opt => opt.MapFrom(src => src.Stoppages ?? string.Empty))
           .ForMember(dest => dest.StoppageList,
               opt => opt.MapFrom(src => src.StoppagesList));
+
+
+
+        CreateMap<TripDetailsModel, TripDetails>().ReverseMap();
 
     }
 }
