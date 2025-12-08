@@ -24,4 +24,6 @@ public class TemplateTripResponse
     public string? Stoppages { get; set; } = String.Empty;
     public List<string> StoppageList { get; set; } = [];
 
+    public bool IsAutoScheduled { get; set; }
+
 }

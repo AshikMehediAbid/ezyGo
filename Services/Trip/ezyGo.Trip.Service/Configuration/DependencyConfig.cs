@@ -1,4 +1,5 @@
 ﻿using ezyGo.Core.ServiceClients.AdminClient.Clients;
+using ezyGo.Trip.Domain.BackgroundServices;
 using ezyGo.Trip.Domain.Managers;
 using ezyGo.Trip.Domain.Managers.Interface;
 using ezyGo.Trip.Domain.Mapping;
@@ -40,6 +41,9 @@ public static class DependencyConfig
                 options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(20);
             });
 
+
+        // Register Background Service
+        services.AddHostedService<AutoTripScheduler>();
 
         // AutoMapper
         services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());

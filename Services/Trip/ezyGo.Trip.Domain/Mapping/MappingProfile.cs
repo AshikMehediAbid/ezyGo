@@ -46,5 +46,12 @@ public class MappingProfile : Profile
 
         CreateMap<TripDetailsModel, TripDetails>().ReverseMap();
 
+
+        CreateMap<TemplateTripResponse, TripDetailsModel>()
+            .ForMember(dest => dest.CompanyId,
+               opt => opt.MapFrom(src => src.BusCompanyId))
+            .ForMember(dest => dest.StoppageList, opt => opt.Ignore())
+            .ForMember(dest => dest.TravelDate, opt => opt.Ignore());
+
     }
 }

@@ -43,6 +43,8 @@ public class TripTemplateClientResponse
     [JsonPropertyName("stoppages")]
     public string? Stoppages { get; set; } = string.Empty;
 
+    public bool IsAutoScheduled { get; set; }
+
     public List<string> StoppagesList =>
         Stoppages?.Split('-', StringSplitOptions.TrimEntries).ToList() ?? new();
 }

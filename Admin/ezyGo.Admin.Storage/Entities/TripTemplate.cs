@@ -25,6 +25,8 @@ public class TripTemplate
 
     public string Stoppages { get; set; } = String.Empty;
 
+    public bool IsAutoScheduled { get; set; }
+
 
     public DateTime CreatedAt { get; set; } 
     public DateTime UpdatedAt { get; set; }

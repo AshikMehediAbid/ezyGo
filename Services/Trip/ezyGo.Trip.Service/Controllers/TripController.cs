@@ -42,7 +42,7 @@ public class TripController : ControllerBase
         try
         {
             TripDetailsModel trip = await _service.ScheduleTrip(tripDetails);
-            return Ok();
+            return Ok(trip);
         }
         catch (Exception ex)
         {

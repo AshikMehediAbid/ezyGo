@@ -20,6 +20,13 @@ public class TripService : ITripService
         _tripRepository = tripRepository;
     }
 
+    public async Task<List<TemplateTripResponse>> GetAllTripTemplate()
+    {
+        var allTripTemplate = await _adminClient.GetAllTripTemplate();
+
+        return _mapper.Map<List<TemplateTripResponse>>(allTripTemplate);
+    }
+
     public async Task<List<TemplateTripResponse>> GetTripTemplateByCompanyId(int companyId)
     {
         var TreapTemplate = await _adminClient.GetTripTemplateByCompanyId(companyId);

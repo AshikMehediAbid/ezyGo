@@ -16,6 +16,8 @@ public class TripTemplateModel
     public TimeOnly DepartureTime { get; set; }
     public TimeOnly ArrivalTime { get; set; }
 
+    public bool IsAutoScheduled { get; set; }
+
     public string? Stoppages { get; set; } = String.Empty;
 
     public DateTime CreatedAt { get; set; }
