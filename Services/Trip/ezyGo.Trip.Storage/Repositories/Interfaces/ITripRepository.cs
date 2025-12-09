@@ -6,4 +6,5 @@ namespace ezyGo.Trip.Storage.Repositories.Interfaces;
 public interface ITripRepository : IGenericRepository<TripDetails>
 {
     public Task<List<TemplateTrip>> GetTemplateTripByCompanyId(int companyId);
+    Task<bool> IsTripExistAsync(int templateId, DateOnly tripDate);
 }

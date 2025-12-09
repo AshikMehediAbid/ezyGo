@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ezyGo.Core.Exceptions;
 using ezyGo.Core.ServiceClients.AdminClient.Clients;
 using ezyGo.Trip.Domain.Managers.Interface;
 using ezyGo.Trip.Domain.Models;
@@ -13,7 +14,7 @@ public class TripService : ITripService
     private readonly IAdminClient _adminClient;
     private readonly IMapper _mapper;
 
-    public TripService(IAdminClient adminClient, IMapper mapper, ITripRepository tripRepository )
+    public TripService(IAdminClient adminClient, IMapper mapper, ITripRepository tripRepository)
     {
         _adminClient = adminClient;
         _mapper = mapper;
@@ -30,15 +31,30 @@ public class TripService : ITripService
     public async Task<List<TemplateTripResponse>> GetTripTemplateByCompanyId(int companyId)
     {
         var TreapTemplate = await _adminClient.GetTripTemplateByCompanyId(companyId);
-        
+
         return _mapper.Map<List<TemplateTripResponse>>(TreapTemplate);
     }
 
     public async Task<TripDetailsModel> ScheduleTrip(TripDetailsModel tripDetails)
     {
+        var isDuplicate = await CheckDuplicateTrip(tripDetails);
+        if (isDuplicate)
+        {
+            throw new AlreadyExistException($"Trip with TemplateId: {tripDetails.TripTemplateId} scheduled for the selected date.{tripDetails.TravelDate}");
+        }
+
         var scheduledTrip = _mapper.Map<TripDetails>(tripDetails);
-        var scheduledTripEntity =   await _tripRepository.AddAsync(scheduledTrip);
+        var scheduledTripEntity = await _tripRepository.AddAsync(scheduledTrip);
 
         return _mapper.Map<TripDetailsModel>(scheduledTripEntity);
+    }
+
+    private async Task<bool> CheckDuplicateTrip(TripDetailsModel tripDetails)
+    {
+        var isTripExist = await _tripRepository.IsTripExistAsync(
+            tripDetails.TripTemplateId,
+            tripDetails.TravelDate);
+
+        return isTripExist;
     }
 }

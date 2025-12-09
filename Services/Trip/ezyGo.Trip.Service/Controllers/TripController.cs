@@ -1,4 +1,5 @@
-﻿using ezyGo.Trip.Domain.Managers.Interface;
+﻿using ezyGo.Core.Exceptions;
+using ezyGo.Trip.Domain.Managers.Interface;
 using ezyGo.Trip.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,11 @@ public class TripController : ControllerBase
         {
             TripDetailsModel trip = await _service.ScheduleTrip(tripDetails);
             return Ok(trip);
+        }
+        catch (AlreadyExistException ex)
+        {
+            _logger.LogError(ex, "Skip scheduling the Trip. Trip already exists.");
+            return Ok(ex.Message);
         }
         catch (Exception ex)
         {
