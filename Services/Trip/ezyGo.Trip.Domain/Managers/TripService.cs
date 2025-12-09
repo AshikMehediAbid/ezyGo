@@ -49,6 +49,60 @@ public class TripService : ITripService
         return _mapper.Map<TripDetailsModel>(scheduledTripEntity);
     }
 
+    public async Task<IEnumerable<TripDetailsModel>> GetAllTripByUserSearchRequest(UserTripRequest tripRequest)
+    {
+        var filter = _mapper.Map<TripRequest>(tripRequest);
+        var trips = await _tripRepository.GetAllTripByUserSearchRequest(filter);
+
+        return _mapper.Map<IEnumerable<TripDetailsModel>>(trips);
+    }
+
+
+    public async Task<TripDetailsModel?> GetTripById(int id)
+    {
+        var trip = await _tripRepository.GetByIdAsync(id);
+        return trip is null ? null : _mapper.Map<TripDetailsModel>(trip);
+    }
+
+    public async Task<TripDetailsModel> UpdateTrip(int id, TripDetailsModel trip)
+    {
+        var existing = await _tripRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Trip {id} not found");
+
+        // Keep the id consistent
+        trip.Id = id;
+
+        var updatedEntity = _mapper.Map<TripDetails>(trip);
+        await _tripRepository.UpdateAsync(updatedEntity);
+
+        return _mapper.Map<TripDetailsModel>(updatedEntity);
+    }
+
+    public async Task<bool> DeleteTrip(int id)
+    {
+        var existing = await _tripRepository.GetByIdAsync(id);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        await _tripRepository.DeleteAsync(existing);
+        return true;
+    }
+
+    public async Task<bool> DeleteAllTripByTripDate(DateOnly date)
+    {
+        var trips = await _tripRepository.GetAllTripByDateAsync(date);
+        if (trips is null)
+        {
+            return false;
+        }
+        foreach (var trip in trips)
+        {
+            await _tripRepository.DeleteAsync(trip);
+        }
+        return true;
+    }
+
     private async Task<bool> CheckDuplicateTrip(TripDetailsModel tripDetails)
     {
         var isTripExist = await _tripRepository.IsTripExistAsync(

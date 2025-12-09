@@ -1,4 +1,6 @@
-﻿namespace ezyGo.Trip.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ezyGo.Trip.Domain.Models;
 
 public class TripDetailsModel
 {
@@ -23,6 +25,7 @@ public class TripDetailsModel
     public TimeOnly ArrivalTime { get; set; }
 
     // Travel date for the scheduled trip
+    [Required]
     public DateOnly TravelDate { get; set; }
 
     public string? Stoppages { get; set; } = String.Empty;

@@ -18,6 +18,33 @@ public class TripController : ControllerBase
         _logger = logger;
     }
 
+    [HttpPost]
+    [Route("search")]
+    public async Task<IActionResult> GetAllTripByUserSearchRequest([FromBody] UserTripRequest tripRequest)
+    {
+        try
+        {
+            var trips = await _service.GetAllTripByUserSearchRequest(tripRequest);
+            return Ok(trips);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var trip = await _service.GetTripById(id);
+        if (trip is null)
+        {
+            return NotFound();
+        }
+        return Ok(trip);
+    }
+
 
     [HttpGet]
     [Route("template-trip-by-company/{id}")]
@@ -52,6 +79,46 @@ public class TripController : ControllerBase
         }
         catch (Exception ex)
         {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> Update(int id, TripDetailsModel trip)
+    {
+        try
+        {
+            var updated = await _service.UpdateTrip(id, trip);
+            return Ok(updated);
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update trip {TripId}", id);
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var deleted = await _service.DeleteTrip(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete trip {TripId}", id);
             return BadRequest(ex.Message);
         }
     }

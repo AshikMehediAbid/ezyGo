@@ -84,7 +84,7 @@ public class TripTemplateController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to create trip template.");
-            return BadRequest(ex.Message);
+            return BadRequest(ex.Message +"\nInnerException: "+ ex.InnerException?.Message );
         }
     }
 

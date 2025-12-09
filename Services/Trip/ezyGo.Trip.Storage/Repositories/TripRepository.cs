@@ -13,6 +13,31 @@ public class TripRepository : GenericRepository<TripDetails>, ITripRepository
     {
         _db = db;
     }
+
+    public Task<List<TripDetails>> GetAllTripByDateAsync(DateOnly date)
+    {
+        var query = _db.TripDetails.AsQueryable().AsNoTracking();
+
+        query = query.Where(t => t.TravelDate < date);
+
+        return query.ToListAsync();
+    }
+
+    public Task<List<TripDetails>> GetAllTripByUserSearchRequest(TripRequest filter)
+    {
+        var query = _db.TripDetails.AsQueryable().AsNoTracking();
+
+        query = query.Where(t =>
+            t.TravelDate == filter.TripDate &&
+            t.Stoppages != null &&
+            t.Stoppages.Contains(filter.FromLocation) &&
+            t.Stoppages.Contains(filter.ToLocation) &&
+            t.Stoppages.IndexOf(filter.FromLocation) < t.Stoppages.IndexOf(filter.ToLocation)
+        );
+
+        return query.ToListAsync();
+    }
+
     public Task<List<TemplateTrip>> GetTemplateTripByCompanyId(int companyId)
     {
         throw new NotImplementedException();
@@ -22,8 +47,8 @@ public class TripRepository : GenericRepository<TripDetails>, ITripRepository
     {
         var query = _db.TripDetails.AsQueryable();
 
-        query = query.Where(t => 
-            t.TripTemplateId == templateId && 
+        query = query.Where(t =>
+            t.TripTemplateId == templateId &&
             t.TravelDate == tripDate);
 
         return await query.AnyAsync();

@@ -49,6 +49,10 @@ public class TripTemplateService : ITripTemplateService
         tripTemplate.CreatedAt = DateTime.UtcNow;
         tripTemplate.UpdatedAt = DateTime.UtcNow;
 
+        // Avoid re-inserting bus/route entities from the payload
+        tripTemplate.Bus = null;
+        tripTemplate.Route = null;
+
         var tripTemplateEntity = _mapper.Map<TripTemplate>(tripTemplate);
         var createdTemplate = await _tripTemplateRepository.AddAsync(tripTemplateEntity);
 

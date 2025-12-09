@@ -53,5 +53,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.StoppageList, opt => opt.Ignore())
             .ForMember(dest => dest.TravelDate, opt => opt.Ignore());
 
+
+        CreateMap<TripRequest, UserTripRequest>().ReverseMap();
     }
 }

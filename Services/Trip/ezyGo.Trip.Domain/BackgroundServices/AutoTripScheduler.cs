@@ -44,6 +44,7 @@ public class AutoTripScheduler : BackgroundService
 
             _logger.LogInformation("Auto-trip scheduling triggered.");
             await GenerateTripsAutomatically(stoppingToken);
+            await DeleteTripsAutomatically(stoppingToken);
 
         }
     }
@@ -97,6 +98,34 @@ public class AutoTripScheduler : BackgroundService
             }
 
             _logger.LogInformation("Auto trip scheduling job completed.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while generating trips automatically.");
+        }
+    }
+
+    private async Task DeleteTripsAutomatically(CancellationToken stoppingToken)
+    {
+        try
+        {
+            _logger.LogInformation("Starting auto trip deleting job...");
+
+            // Create scope manually for scoped services
+            using var scope = _scopeFactory.CreateScope();
+
+            var _tripService = scope.ServiceProvider.GetRequiredService<ITripService>();
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var deleteBeforeDate = today.AddDays(-10);
+            var trips = await _tripService.DeleteAllTripByTripDate(deleteBeforeDate);
+
+            if (trips == false)
+            {
+                _logger.LogInformation("No trips found for deletion.");
+            }
+
+            _logger.LogInformation($"Trips before {deleteBeforeDate} deleted successfully.");
         }
         catch (Exception ex)
         {
