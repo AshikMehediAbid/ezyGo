@@ -90,6 +90,8 @@ public class BusService : IBusService
         existingBus.BusType = bus.BusType;
         existingBus.TotalCapacity = bus.TotalCapacity;
         existingBus.UpdatedAt = DateTime.UtcNow;
+        existingBus.BusCompanyEntityId = bus.BusCompanyId;
+        existingBus.IsActive = bus.IsActive;
 
         await _busRepo.UpdateAsync(existingBus);
     }

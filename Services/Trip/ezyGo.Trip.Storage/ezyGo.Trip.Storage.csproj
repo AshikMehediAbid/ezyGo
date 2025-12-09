@@ -1,14 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>60b2764e-6ad7-40c6-a5a9-8ff073c69c08</UserSecretsId>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <ProjectReference Include="..\..\..\Core\ezygo.Core\ezyGo.Core.csproj" />
+    <ProjectReference Include="..\..\..\Core\ezyGo.EntityFrameworkCore\ezyGo.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Sql\Mapping\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,14 +26,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\ezygo.Core\ezyGo.Core.csproj" />
-    <ProjectReference Include="..\..\Core\ezyGo.EntityFrameworkCore\ezyGo.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\ezyGo.Admin.Domain\ezyGo.Admin.Domain.csproj" />
-    <ProjectReference Include="..\ezyGo.Admin.Storage\ezyGo.Admin.Storage.csproj" />
   </ItemGroup>
 
 </Project>
