@@ -19,6 +19,9 @@ public static class DependencyConfig
         services.AddScoped<ITripService, TripService>();
         services.AddScoped<ITripRepository, TripRepository>();
 
+        services.AddScoped<ISeatRepository, SeatRepository>();
+        services.AddScoped<ISeatService, SeatService>();
+
 
         // Admin Service integration with resilience
         services.AddHttpClient<IAdminClient, AdminClient>(client =>
