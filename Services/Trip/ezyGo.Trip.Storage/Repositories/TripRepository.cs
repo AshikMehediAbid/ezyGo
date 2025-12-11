@@ -33,7 +33,9 @@ public class TripRepository : GenericRepository<TripDetails>, ITripRepository
             t.Stoppages.Contains(filter.FromLocation) &&
             t.Stoppages.Contains(filter.ToLocation) &&
             t.Stoppages.IndexOf(filter.FromLocation) < t.Stoppages.IndexOf(filter.ToLocation)
-        );
+            
+        )
+            .OrderBy(t=>t.ArrivalTime);
 
         return query.ToListAsync();
     }
