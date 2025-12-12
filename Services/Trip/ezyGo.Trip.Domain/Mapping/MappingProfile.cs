@@ -55,5 +55,7 @@ public class MappingProfile : Profile
 
 
         CreateMap<TripRequest, UserTripRequest>().ReverseMap();
+
+        CreateMap<Seat, SeatModel>().ReverseMap();
     }
 }

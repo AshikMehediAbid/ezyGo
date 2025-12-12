@@ -1,5 +1,11 @@
-﻿namespace ezyGo.Trip.Storage.Repositories.Interfaces;
+﻿using ezyGo.EntityFrameworkCore.Repository;
+using ezyGo.Trip.Storage.Entities;
 
-public interface ISeatRepository
+namespace ezyGo.Trip.Storage.Repositories.Interfaces;
+
+public interface ISeatRepository : IGenericRepository<Seat> 
 {
+    Task<List<Seat>> GetAllSeatByTripId(int tripId);
+    Task DeleteSeatByTripId(int tripId);
+
 }

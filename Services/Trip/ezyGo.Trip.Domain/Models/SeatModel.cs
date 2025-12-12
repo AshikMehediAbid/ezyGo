@@ -1,9 +1,9 @@
-﻿namespace ezyGo.Trip.Storage.Entities;
+﻿namespace ezyGo.Trip.Domain.Models;
 
-public class Seat
+public class SeatModel
 {
     public int Id { get; set; }
-    public int TripId { get; set; }
+    public int tripId { get; set; }
     public string SeatNumber { get; set; } = string.Empty;
     public bool IsAvailable { get; set; } = true;
     public int SeatFare { get; set; }
