@@ -11,7 +11,7 @@ public static class DependencyConfig
     {
 
         // Service register
-        services.AddScoped<ISearchService, SearchService>();
+        services.AddScoped<ITripService, TripService>();
 
         // Trip Service integration with resilience
         services.AddHttpClient<ITripClient, TripClient>(client =>
