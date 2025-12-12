@@ -11,14 +11,16 @@ namespace ezyGo.Trip.Domain.Managers;
 public class TripService : ITripService
 {
     private readonly ITripRepository _tripRepository;
+    private readonly ISeatService _seatService;
     private readonly IAdminClient _adminClient;
     private readonly IMapper _mapper;
 
-    public TripService(IAdminClient adminClient, IMapper mapper, ITripRepository tripRepository)
+    public TripService(IAdminClient adminClient, IMapper mapper, ITripRepository tripRepository, ISeatService seatService)
     {
         _adminClient = adminClient;
         _mapper = mapper;
         _tripRepository = tripRepository;
+        _seatService = seatService;
     }
 
     public async Task<List<TemplateTripResponse>> GetAllTripTemplate()
@@ -45,6 +47,8 @@ public class TripService : ITripService
 
         var scheduledTrip = _mapper.Map<TripDetails>(tripDetails);
         var scheduledTripEntity = await _tripRepository.AddAsync(scheduledTrip);
+
+        await _seatService.CreateSeatsForTrip(scheduledTrip.Id, scheduledTrip.TotalCapacity, scheduledTrip.BaseFare);
 
         return _mapper.Map<TripDetailsModel>(scheduledTripEntity);
     }
@@ -86,6 +90,7 @@ public class TripService : ITripService
         }
 
         await _tripRepository.DeleteAsync(existing);
+        await _seatService.DeleteSeatsForTrip(id);
         return true;
     }
 

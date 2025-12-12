@@ -10,5 +10,6 @@ public class TripDbContext : DbContext
     }
 
     public DbSet<TripDetails> TripDetails { get; set; }
+    public DbSet<Seat> Seats { get; set; }
 
 }
