@@ -2,7 +2,8 @@
 
 namespace ezyGo.Platform.Domain.Managers.Interfaces;
 
-public interface ISearchService
+public interface ITripService
 {
+    Task<List<SeatClientResponse>> GetAllSeatByTripId(int tripId);
     Task<List<SearchedTripClientResponse>> SearchTripsAsync(string fromCity, string toCity, DateOnly date);
 }
