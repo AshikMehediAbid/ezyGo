@@ -46,7 +46,7 @@ public class SeatService : ISeatService
                 IsAvailable = true,
                 SeatFare = fare,
                 SeatRow = seatRow,
-                SeatColumn = seatColumn+1
+                SeatColumn = 0
             };
             await _seatRepo.AddAsync(seatEntity);
         }

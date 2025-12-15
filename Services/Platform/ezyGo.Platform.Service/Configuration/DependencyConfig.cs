@@ -1,7 +1,9 @@
 ﻿using ezyGo.Core.ServiceClients.TripClient.Clients;
+using ezyGo.Platform.Domain.DistributedLock;
 using ezyGo.Platform.Domain.Managers;
 using ezyGo.Platform.Domain.Managers.Interfaces;
 using Polly;
+using StackExchange.Redis;
 
 namespace ezyGo.Platform.Service.Configuration;
 
@@ -12,6 +14,15 @@ public static class DependencyConfig
 
         // Service register
         services.AddScoped<ITripService, TripService>();
+
+        services.AddScoped<ISeatService, SeatService>();
+        services.AddScoped<ILockService, LockService>();
+
+        // Configure redis
+        var redisConnectionString = configuration.GetConnectionString("Redis");
+        
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        ConnectionMultiplexer.Connect(redisConnectionString!));
 
         // Trip Service integration with resilience
         services.AddHttpClient<ITripClient, TripClient>(client =>
