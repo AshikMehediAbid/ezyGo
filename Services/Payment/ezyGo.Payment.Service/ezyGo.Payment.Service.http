@@ -1,0 +1,6 @@
+@ezyGo.Payment.Service_HostAddress = http://localhost:5080
+
+GET {{ezyGo.Payment.Service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -47,13 +47,13 @@ public class SeatController : ControllerBase
         }
     }
 
-    [HttpPut]
-    [Route("update-seat/{id}")]
-    public async Task<IActionResult> UpdateSeatAvailability(int seatId, bool isSeatBooked)
+    [HttpPost]
+    [Route("update-seat")]
+    public async Task<IActionResult> ConfirmSeat([FromBody] string seats)
     {
         try
         {
-            await _seatService.UpdateSeatAvailability(seatId, isSeatBooked);
+            await _seatService.ConfirmSeat(seats);
 
             return Ok("Seat status Updated");
 

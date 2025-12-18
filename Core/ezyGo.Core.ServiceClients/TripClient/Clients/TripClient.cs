@@ -11,6 +11,17 @@ public class TripClient : ITripClient
         _httpClient = httpClient;
     }
 
+    public async Task ConfirmSeatsAsync(string seats)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/seat/update-seat", seats);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // Handle error response as needed
+            throw new HttpRequestException($"Request failed with status code {response.StatusCode}");
+        }
+    }
+
     public async Task<List<SeatClientResponse>> GetAllSeatByTripId(int tripId)
     {
         var response = await _httpClient.GetAsync($"api/seat/get-all-by-trip-id?tripId={tripId}");

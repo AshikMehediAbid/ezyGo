@@ -7,5 +7,5 @@ public interface ISeatService
     Task CreateSeatsForTrip(int tripId, string TotalSeat, int Fare);
     Task DeleteSeatsForTrip(int tripId);
     Task<List<SeatModel>> GetAllSeatByTripId(int tripId);
-    Task UpdateSeatAvailability(int seatId, bool isSeatBooked);
+    Task ConfirmSeat(string seats);
 }

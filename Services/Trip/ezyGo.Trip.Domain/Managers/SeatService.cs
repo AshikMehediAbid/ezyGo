@@ -64,16 +64,37 @@ public class SeatService : ISeatService
         return _mapper.Map<List<SeatModel>>(seats);
     }
 
-    public async Task UpdateSeatAvailability(int seatId, bool isSeatBooked)
+    public async Task ConfirmSeat(string seats)
     {
-        var seat = await _seatRepo.GetByIdAsync(seatId);
-        if (seat == null)
+        List<int> seatList = GetSeats(seats);
+        for (int i = 0; i < seatList.Count; i++)
         {
-            throw new KeyNotFoundException($"Seat with ID {seatId} not found.");
-        }
-        seat.IsAvailable = !isSeatBooked;
+            var seat = await _seatRepo.GetByIdAsync(seatList[i]);
+            if (seatList[i] == null)
+            {
+                throw new KeyNotFoundException($"Seat with ID {seatList[i]} not found.");
+            }
+            seat.IsAvailable = false;
 
-        await _seatRepo.UpdateAsync(seat);
+            await _seatRepo.UpdateAsync(seat);
+        }
+        
+    }
+
+    private List<int> GetSeats(string selectedSeats)
+    {
+        var seats = new List<int>();
+        if (string.IsNullOrEmpty(selectedSeats))
+            return seats;
+        var seatStrings = selectedSeats.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        foreach (var seatStr in seatStrings)
+        {
+            if (int.TryParse(seatStr.Trim(), out int seatNumber))
+            {
+                seats.Add(seatNumber);
+            }
+        }
+        return seats;
     }
 
     private (int seatRow, int seatColumn, bool isExtra) GetRowColumn(int totalSeat)
