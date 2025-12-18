@@ -28,8 +28,8 @@ public class EmailService : IEmailService
                        $"From: {ticketPdfModel.From}\n" +
                        $"To: {ticketPdfModel.To}\n" +
                        $"Date: {ticketPdfModel.JourneyDate:dd MMMM yyyy}\n" +
-                       $"Bus Number: {ticketPdfModel.BusNumber}\n" +
-                       $"Seat Numbers: {ticketPdfModel.SeatNumbers}\n" +
+                       $"Bus: {ticketPdfModel.BusNumber}\n" +
+                       $"Seat(s): {ticketPdfModel.SeatNames}\n" +
                        $"Fare: ${ticketPdfModel.Fare}\n" +
                        $"Ticket No: {ticketPdfModel.TicketNo}\n\n" +
                        "We wish you a pleasant journey!\n\n" +

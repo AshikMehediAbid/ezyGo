@@ -1,5 +1,6 @@
 ﻿using ezyGo.PdfGenerator.Models;
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 
 namespace ezyGo.PdfGenerator.Services;
 
@@ -11,24 +12,100 @@ public class TicketPdfService : ITicketPdfService
         {
             container.Page(page =>
             {
+                page.Size(PageSizes.A4);
                 page.Margin(30);
+                page.DefaultTextStyle(x => x.FontSize(12));
 
                 page.Content().Column(col =>
                 {
-                    col.Item().Text("Bus Ticket")
-                        .FontSize(22).Bold();
+                    /* ================= HEADER ================= */
+                    col.Item().Background(Colors.Blue.Darken2).Padding(15).Row(row =>
+                    {
+                        row.RelativeItem().Text("🚌 ezyGo Bus Ticket")
+                            .FontSize(20)
+                            .Bold()
+                            .FontColor(Colors.White);
 
-                    col.Item().Text($"Ticket No: {model.TicketNo}");
-                    col.Item().Text($"Passenger: {model.PassengerName}");
-                    col.Item().Text($"Passenger: {model.PassengerEmail}");
-                    col.Item().Text($"Passenger: {model.PassengerPhone}");
-                    col.Item().Text($"Bus: {model.BusNumber}");
-                    col.Item().Text($"Seat: {model.SeatNumbers}");
-                    col.Item().Text($"Route: {model.From} → {model.To}");
-                    col.Item().Text($"Journey Date: {model.JourneyDate:dd MMM yyyy}");
-                    col.Item().Text($"Fare: {model.Fare} BDT");
+                        row.ConstantItem(150).AlignRight().Text($"Ticket No\n{model.TicketNo}")
+                            .FontColor(Colors.White)
+                            .Bold();
+                    });
+
+                    col.Item().PaddingVertical(10);
+
+                    /* ================= PASSENGER INFO ================= */
+                    col.Item().Text("Passenger Information")
+                        .Bold()
+                        .FontSize(14);
+
+                    col.Item().LineHorizontal(1);
+
+                    col.Item().PaddingVertical(5).Table(table =>
+                    {
+                        table.ColumnsDefinition(columns =>
+                        {
+                            columns.RelativeColumn();
+                            columns.RelativeColumn();
+                        });
+
+                        table.Cell().Text($"Name: {model.PassengerName}");
+                        table.Cell().Text($"Phone: {model.PassengerPhone}");
+
+                        table.Cell().Text($"Email: {model.PassengerEmail}");
+                        table.Cell().Text($"Seat(s): {model.SeatNames}");
+                    });
+
+                    col.Item().PaddingVertical(10);
+
+                    /* ================= JOURNEY INFO ================= */
+                    col.Item().Text("Journey Details")
+                        .Bold()
+                        .FontSize(14);
+
+                    col.Item().LineHorizontal(1);
+
+                    col.Item().PaddingVertical(5).Table(table =>
+                    {
+                        table.ColumnsDefinition(columns =>
+                        {
+                            columns.RelativeColumn();
+                            columns.RelativeColumn();
+                        });
+
+                        table.Cell().Text($"From: {model.From}");
+                        table.Cell().Text($"To: {model.To}");
+
+                        table.Cell().Text($"Bus: {model.BusNumber}");
+                        table.Cell().Text($"Journey Date: {model.JourneyDate:dd MMM yyyy}");
+                    });
+
+                    col.Item().PaddingVertical(15);
+
+                    /* ================= FARE SECTION ================= */
+                    col.Item().Background(Colors.Grey.Lighten3).Padding(15).Row(row =>
+                    {
+                        row.RelativeItem().Text("Total Fare")
+                            .Bold()
+                            .FontSize(14);
+
+                        row.ConstantItem(150).AlignRight().Text($"{model.Fare} BDT")
+                            .Bold()
+                            .FontSize(16)
+                            .FontColor(Colors.Green.Darken2);
+                    });
+
+                    col.Item().PaddingVertical(20);
+
+                    /* ================= FOOTER ================= */
+                    col.Item().AlignCenter().Text("Please carry this ticket during your journey")
+                        .Italic()
+                        .FontColor(Colors.Grey.Darken1);
+
+                    col.Item().AlignCenter().Text("Thank you for choosing ezyGo 🚍")
+                        .Bold();
                 });
             });
-        }).GeneratePdf();
+        })
+        .GeneratePdf();
     }
 }

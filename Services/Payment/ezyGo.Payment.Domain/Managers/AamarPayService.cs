@@ -1,6 +1,7 @@
 ﻿using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Domain.Models;
 using ezyGo.Payment.Storage.Entities;
+using ezyGo.Payment.Storage.Repositories;
 using ezyGo.Payment.Storage.Repositories.Interfaces;
 using ezyGo.PdfGenerator.Models;
 using ezyGo.PdfGenerator.Services;
@@ -158,6 +159,7 @@ public class AamarPayService : IPaymentService
             PassengerPhone = paymentRequest.PassengerPhone ?? string.Empty,
             BusNumber = paymentRequest.BusNumber ?? string.Empty,
             SeatNumbers = paymentRequest.SeatNumbers ?? string.Empty,
+            SeatNames = paymentRequest.SeatNames ?? string.Empty,
             JourneyDate = paymentRequest.JourneyDate,
             From = paymentRequest.From ?? string.Empty,
             To = paymentRequest.To ?? string.Empty,
@@ -192,6 +194,7 @@ public class AamarPayService : IPaymentService
             PassengerPhone = paymentInfo.PassengerPhone,
             BusNumber = paymentInfo.BusNumber,
             SeatNumbers = paymentInfo.SeatNumbers,
+            SeatNames = paymentInfo.SeatNames,
             JourneyDate = paymentInfo.JourneyDate,
             From = paymentInfo.From,
             To = paymentInfo.To,
@@ -202,5 +205,11 @@ public class AamarPayService : IPaymentService
 
         // Send email with pdf attachment
         await _emailService.SendEmailWithPdf(ticketModel, pdf);
+    }
+
+    public async Task<PaymentInfo> GetPaymentInfoByTransactionId(string tran_id)
+    {
+        var paymentInfo = await _paymentRepo.GetPaymentInfoByTransactionId(tran_id);
+        return paymentInfo;
     }
 }

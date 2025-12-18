@@ -1,5 +1,4 @@
-﻿using ezyGo.Payment.Domain.Managers;
-using ezyGo.Payment.Domain.Managers.Interfaces;
+﻿using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -149,6 +148,45 @@ public class PaymentController : ControllerBase
             {
                 Success = false,
                 Message = "An error occurred while validating payment",
+                Error = ex.Message
+            });
+        }
+    }
+
+    [HttpGet("info/{transactionId}")]
+    public async Task<IActionResult> GetPaymentInfo(string transactionId)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(transactionId))
+            {
+                return BadRequest(new { Message = "Transaction ID is required" });
+            }
+
+            var paymentInfo = await _paymentService.GetPaymentInfoByTransactionId(transactionId);
+
+            if (paymentInfo == null)
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Message = "Payment information not found for the given transaction ID"
+                });
+            }
+
+            return Ok(new
+            {
+                Success = true,
+                Data = paymentInfo
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting payment info");
+            return StatusCode(500, new
+            {
+                Success = false,
+                Message = "An error occurred while getting payment information",
                 Error = ex.Message
             });
         }

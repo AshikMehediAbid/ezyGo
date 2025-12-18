@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\ezyGo.Core.ServiceClients\ezyGo.Core.ServiceClients.csproj" />
+    <ProjectReference Include="..\..\..\Core\ezyGo.PdfGenerator\ezyGo.PdfGenerator.csproj" />
   </ItemGroup>
 
 </Project>

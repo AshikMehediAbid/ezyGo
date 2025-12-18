@@ -7,6 +7,7 @@ public class PaymentRequest
     public string PassengerPhone { get; set; }
     public string BusNumber { get; set; }
     public string SeatNumbers { get; set; }
+    public string SeatNames { get; set; }
     public DateTime JourneyDate { get; set; }
     public string From { get; set; }
     public string To { get; set; }

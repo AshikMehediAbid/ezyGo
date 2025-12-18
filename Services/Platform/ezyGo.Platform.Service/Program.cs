@@ -1,6 +1,10 @@
 using ezyGo.Platform.Service.Configuration;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// PDF License
+QuestPDF.Settings.License = LicenseType.Community;
 
 // IoC
 builder.Services.AddDependencies(builder.Configuration);

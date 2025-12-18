@@ -2,4 +2,5 @@
 
 public interface IUtilityService
 {
+    Task<byte[]> GenerateTicketPdfAsync(string transactionId);
 }
