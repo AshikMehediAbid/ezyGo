@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ezyGo.Core.Notification\ezyGo.Core.Notification.csproj" />
     <ProjectReference Include="..\..\..\Core\ezyGo.Core.ServiceClients\ezyGo.Core.ServiceClients.csproj" />
+    <ProjectReference Include="..\..\..\Core\ezyGo.PdfGenerator\ezyGo.PdfGenerator.csproj" />
     <ProjectReference Include="..\ezyGo.Payment.Storage\ezyGo.Payment.Storage.csproj" />
   </ItemGroup>
 

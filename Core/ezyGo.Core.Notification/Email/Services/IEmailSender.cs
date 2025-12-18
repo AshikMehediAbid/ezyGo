@@ -1,6 +1,8 @@
-﻿namespace ezyGo.Core.Notification.Email.Services;
+﻿using ezyGo.Core.Notification.Email.Models;
+
+namespace ezyGo.Core.Notification.Email.Services;
 
 public interface IEmailSender
 {
-    Task SendEmailAsync(string toEmail, string subject, string body);
+    Task SendEmailAsync(EmailMessage emailMessage );
 }

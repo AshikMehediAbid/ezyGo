@@ -2,6 +2,8 @@
 using ezyGo.Payment.Domain.Models;
 using ezyGo.Payment.Storage.Entities;
 using ezyGo.Payment.Storage.Repositories.Interfaces;
+using ezyGo.PdfGenerator.Models;
+using ezyGo.PdfGenerator.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -13,6 +15,8 @@ public class AamarPayService : IPaymentService
 {
     private readonly IPaymentRepository _paymentRepo;
     private readonly ISeatService _seatService;
+    private readonly ITicketPdfService _ticketPdfService;
+    private readonly IEmailService _emailService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<AamarPayService> _logger;
     private readonly IConfiguration _configuration;
@@ -23,10 +27,12 @@ public class AamarPayService : IPaymentService
     private readonly string _successUrl;
     private readonly string _failUrl;
     private readonly string _cancelUrl;
-    public AamarPayService(IPaymentRepository paymentRepo, ISeatService seatService, IHttpClientFactory httpClientFactory, ILogger<AamarPayService> logger, IConfiguration configuration)
+    public AamarPayService(IPaymentRepository paymentRepo, ISeatService seatService, ITicketPdfService ticketPdf, IEmailService emailService, IHttpClientFactory httpClientFactory, ILogger<AamarPayService> logger, IConfiguration configuration)
     {
         _paymentRepo = paymentRepo;
         _seatService = seatService;
+        _ticketPdfService = ticketPdf;
+        _emailService = emailService;
         _httpClientFactory = httpClientFactory;
         _logger = logger;
         _configuration = configuration;
@@ -50,19 +56,19 @@ public class AamarPayService : IPaymentService
                 success_url = _successUrl,
                 fail_url = _failUrl,
                 cancel_url = _cancelUrl,
-                amount = paymentRequest.TotalAmount.ToString("F2"),
+                amount = paymentRequest.Fare.ToString("F2"),
                 currency = "BDT",
                 signature_key = _signatureKey,
                 desc = "Book Purchase Payment",
-                cus_name = paymentRequest.CustomerName ?? "anonymous",
-                cus_email = paymentRequest.CustomerEmail ?? "payer@customer.com",
+                cus_name = paymentRequest.PassengerName ?? "anonymous",
+                cus_email = paymentRequest.PassengerEmail ?? "payer@customer.com",
                 cus_add1 = "",
                 cus_add2 = "Mohakhali DOHS",
                 cus_city = "",
                 cus_state = "",
                 cus_postcode = "",
                 cus_country = "Bangladesh",
-                cus_phone = paymentRequest.CustomerPhone,
+                cus_phone = paymentRequest.PassengerPhone,
                 type = "json"
             };
 
@@ -147,22 +153,54 @@ public class AamarPayService : IPaymentService
         var paymentInfo = new PaymentInfo
         {
             TransactionId = tran_id,
-            Amount = paymentRequest.TotalAmount,
-            Seats = paymentRequest.SelectedSeats,
-            Status = "Initiate",
+            PassengerName = paymentRequest.PassengerName ?? string.Empty,
+            PassengerEmail = paymentRequest.PassengerEmail ?? string.Empty,
+            PassengerPhone = paymentRequest.PassengerPhone ?? string.Empty,
+            BusNumber = paymentRequest.BusNumber ?? string.Empty,
+            SeatNumbers = paymentRequest.SeatNumbers ?? string.Empty,
+            JourneyDate = paymentRequest.JourneyDate,
+            From = paymentRequest.From ?? string.Empty,
+            To = paymentRequest.To ?? string.Empty,
+            Fare = paymentRequest.Fare,
+            Status = "Initiated"
         };
         await _paymentRepo.SavePaymentStatus(paymentInfo);
-
     }
 
     public async Task UpdatePaymentStatus(string tran_id, string status)
     {
         await _paymentRepo.UpdatePaymentStatus(tran_id, status);
-        if(status == "Success")
+        if (status == "Success")
         {
             // Get all seats from payment info
             var seats = await _paymentRepo.GetSeatsAsync(tran_id);
             await _seatService.ConfirmSeatsAsync(seats);
+
+            // Generate PDF ticket and Send email
+            await GenerateTicketAndSendEmail(tran_id, seats);
         }
+    }
+
+    private async Task GenerateTicketAndSendEmail(string tran_id, string seats)
+    {
+        PaymentInfo paymentInfo = await _paymentRepo.GetPaymentInfoByTransactionId(tran_id);
+        // Generate pdf
+        var ticketModel = new TicketPdfModel
+        {
+            PassengerName = paymentInfo.PassengerName,
+            PassengerEmail = paymentInfo.PassengerEmail,
+            PassengerPhone = paymentInfo.PassengerPhone,
+            BusNumber = paymentInfo.BusNumber,
+            SeatNumbers = paymentInfo.SeatNumbers,
+            JourneyDate = paymentInfo.JourneyDate,
+            From = paymentInfo.From,
+            To = paymentInfo.To,
+            Fare = paymentInfo.Fare,
+            TicketNo = tran_id
+        };
+        var pdf = _ticketPdfService.GenerateTicketPdf(ticketModel);
+
+        // Send email with pdf attachment
+        await _emailService.SendEmailWithPdf(ticketModel, pdf);
     }
 }

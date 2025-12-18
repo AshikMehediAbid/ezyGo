@@ -6,6 +6,5 @@ namespace ezyGo.Platform.Service.Controllers;
 [ApiController]
 public class UtilityController : ControllerBase
 {
-
     private readonly ILogger<UtilityController> _logger;
 }
