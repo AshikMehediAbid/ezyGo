@@ -92,13 +92,13 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("fail")]
-    public IActionResult Fail([FromForm] string mer_txnid)
+    public async Task<IActionResult> FailAsync([FromForm] string mer_txnid)
     {
         _logger.LogWarning("❌ Payment Failed for Transaction: {TransactionId}", mer_txnid);
 
-        // Update order/payment status to failed in your database
-        // await _orderService.UpdatePaymentStatusAsync(mer_txnid, "Failed");
-
+        // Update Payment Status to Cancel
+        await _paymentService.UpdatePaymentStatus(mer_txnid, "Cancel");
+        return Redirect($"http://localhost:8080/payment/result?status=cancel&mer_txnid={mer_txnid}");
         return Ok(new
         {
             Success = false,
@@ -108,12 +108,13 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("cancel")]
-    public IActionResult Cancel([FromForm] string mer_txnid)
+    public async Task<IActionResult> CancelAsync([FromForm] string mer_txnid)
     {
         _logger.LogInformation("⚠️ Payment Cancelled for Transaction: {TransactionId}", mer_txnid);
 
-        // Update order/payment status to cancelled in your database
-        // await _orderService.UpdatePaymentStatusAsync(mer_txnid, "Cancelled");
+        // Update Payment Status to Cancel
+        await _paymentService.UpdatePaymentStatus(mer_txnid, "Cancel");
+        return Redirect($"http://localhost:8080/payment/result?status=cancel&mer_txnid={mer_txnid}");
 
         return Ok(new
         {
