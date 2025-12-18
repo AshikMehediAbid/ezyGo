@@ -1,10 +1,16 @@
+using ezyGo.Core.Notification.Email.Services;
 using ezyGo.Payment.Domain.Managers;
 using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Service.Configuration;
 using ezyGo.Payment.Storage.Repositories;
 using ezyGo.Payment.Storage.Repositories.Interfaces;
+using ezyGo.PdfGenerator.Services;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// pdf
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Register HttpClient
 builder.Services.AddHttpClient();
@@ -16,6 +22,10 @@ builder.Services.AddDependencies(builder.Configuration);
 builder.Services.AddScoped<IPaymentService, AamarPayService>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
+
 
 
 // Add services to the container.

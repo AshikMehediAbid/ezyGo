@@ -14,11 +14,17 @@ public class PaymentRepository : GenericRepository<PaymentInfo>, IPaymentReposit
         _db = db;
     }
 
+    public Task<PaymentInfo> GetPaymentInfoByTransactionId(string tran_id)
+    {
+        return _db.PaymentInfos
+            .FirstAsync(p => p.TransactionId == tran_id);
+    }
+
     public async Task<string?> GetSeatsAsync(string tranId)
     {
         return await _db.PaymentInfos
             .Where(p => p.TransactionId == tranId)
-            .Select(p => p.Seats)
+            .Select(p => p.SeatNumbers)
             .FirstOrDefaultAsync();
     }
 
@@ -37,7 +43,7 @@ public class PaymentRepository : GenericRepository<PaymentInfo>, IPaymentReposit
         {
             // Update
             isExist.Status = paymentInfo.Status;
-            isExist.Amount = paymentInfo.Amount;
+            isExist.Fare = paymentInfo.Fare;
             _db.PaymentInfos.Update(isExist);
             await _db.SaveChangesAsync();
             return true;

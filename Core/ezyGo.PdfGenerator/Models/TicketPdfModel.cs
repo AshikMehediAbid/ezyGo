@@ -1,6 +1,6 @@
-﻿namespace ezyGo.Payment.Domain.Models;
+﻿namespace ezyGo.PdfGenerator.Models;
 
-public class PaymentRequest
+public class TicketPdfModel
 {
     public string PassengerName { get; set; }
     public string PassengerEmail { get; set; }
