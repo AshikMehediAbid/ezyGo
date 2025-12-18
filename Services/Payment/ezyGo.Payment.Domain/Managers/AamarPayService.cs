@@ -1,5 +1,7 @@
 ﻿using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Domain.Models;
+using ezyGo.Payment.Storage.Entities;
+using ezyGo.Payment.Storage.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -9,6 +11,8 @@ namespace ezyGo.Payment.Domain.Managers;
 
 public class AamarPayService : IPaymentService
 {
+    private readonly IPaymentRepository _paymentRepo;
+    private readonly ISeatService _seatService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<AamarPayService> _logger;
     private readonly IConfiguration _configuration;
@@ -19,8 +23,10 @@ public class AamarPayService : IPaymentService
     private readonly string _successUrl;
     private readonly string _failUrl;
     private readonly string _cancelUrl;
-    public AamarPayService(IHttpClientFactory httpClientFactory, ILogger<AamarPayService> logger, IConfiguration configuration)
+    public AamarPayService(IPaymentRepository paymentRepo, ISeatService seatService, IHttpClientFactory httpClientFactory, ILogger<AamarPayService> logger, IConfiguration configuration)
     {
+        _paymentRepo = paymentRepo;
+        _seatService = seatService;
         _httpClientFactory = httpClientFactory;
         _logger = logger;
         _configuration = configuration;
@@ -31,6 +37,7 @@ public class AamarPayService : IPaymentService
         _successUrl = _configuration["AamarPay:CallbackUrls:Success"] ?? "https://localhost:7195/api/payment/success";
         _failUrl = _configuration["AamarPay:CallbackUrls:Fail"] ?? "https://localhost:7195/api/payment/fail";
         _cancelUrl = _configuration["AamarPay:CallbackUrls:Cancel"] ?? "https://localhost:7195/api/payment/cancel";
+        _seatService = seatService;
     }
     public async Task<string> InitiatePaymentAsync(PaymentRequest paymentRequest)
     {
@@ -76,6 +83,7 @@ public class AamarPayService : IPaymentService
 
             if (responseData != null && responseData.TryGetValue("payment_url", out var paymentUrl))
             {
+                await SavePaymentStatus(paymentRequest, paymentData.tran_id);
                 return paymentUrl;
             }
             else if (responseData != null && responseData.TryGetValue("errorMessage", out var errorMessage))
@@ -130,6 +138,31 @@ public class AamarPayService : IPaymentService
         {
             _logger.LogError(ex, "Error validating payment");
             throw;
+        }
+    }
+
+
+    private async Task SavePaymentStatus(PaymentRequest paymentRequest, string tran_id)
+    {
+        var paymentInfo = new PaymentInfo
+        {
+            TransactionId = tran_id,
+            Amount = paymentRequest.TotalAmount,
+            Seats = paymentRequest.SelectedSeats,
+            Status = "Initiate",
+        };
+        await _paymentRepo.SavePaymentStatus(paymentInfo);
+
+    }
+
+    public async Task UpdatePaymentStatus(string tran_id, string status)
+    {
+        await _paymentRepo.UpdatePaymentStatus(tran_id, status);
+        if(status == "Success")
+        {
+            // Get all seats from payment info
+            var seats = await _paymentRepo.GetSeatsAsync(tran_id);
+            await _seatService.ConfirmSeatsAsync(seats);
         }
     }
 }

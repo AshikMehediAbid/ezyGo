@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Payment.Service", "Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Payment.Domain", "Services\Payment\ezyGo.Payment.Domain\ezyGo.Payment.Domain.csproj", "{C45C2BD9-A404-4C3A-B5FA-2197E822D20D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Payment.Storage", "Services\Payment\ezyGo.Payment.Storage\ezyGo.Payment.Storage.csproj", "{DECC130E-33B7-4673-BE48-83FB9713D37D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{C45C2BD9-A404-4C3A-B5FA-2197E822D20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C45C2BD9-A404-4C3A-B5FA-2197E822D20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C45C2BD9-A404-4C3A-B5FA-2197E822D20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DECC130E-33B7-4673-BE48-83FB9713D37D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DECC130E-33B7-4673-BE48-83FB9713D37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DECC130E-33B7-4673-BE48-83FB9713D37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DECC130E-33B7-4673-BE48-83FB9713D37D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +198,7 @@ Global
 		{76FD66C0-4874-43CC-967E-D33961DCFBD2} = {21F51368-6A12-476C-8138-2597AF3EDC44}
 		{253F2546-2B21-4E86-9AFB-536A04486E1B} = {F96F1E88-B03A-4DD3-A7AD-D56D17BBBB3B}
 		{C45C2BD9-A404-4C3A-B5FA-2197E822D20D} = {F96F1E88-B03A-4DD3-A7AD-D56D17BBBB3B}
+		{DECC130E-33B7-4673-BE48-83FB9713D37D} = {F96F1E88-B03A-4DD3-A7AD-D56D17BBBB3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F974680-2C72-4A69-986B-803F9B7AB4AA}

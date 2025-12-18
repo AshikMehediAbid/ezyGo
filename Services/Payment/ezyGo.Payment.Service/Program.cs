@@ -1,13 +1,21 @@
 using ezyGo.Payment.Domain.Managers;
 using ezyGo.Payment.Domain.Managers.Interfaces;
+using ezyGo.Payment.Service.Configuration;
+using ezyGo.Payment.Storage.Repositories;
+using ezyGo.Payment.Storage.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register HttpClient
 builder.Services.AddHttpClient();
 
+// IoC
+builder.Services.AddDependencies(builder.Configuration);
+
 // Register services
 builder.Services.AddScoped<IPaymentService, AamarPayService>();
+builder.Services.AddScoped<ISeatService, SeatService>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 
 // Add services to the container.

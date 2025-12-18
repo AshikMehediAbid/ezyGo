@@ -5,5 +5,6 @@ public class PaymentRequest
     public string CustomerName { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerPhone { get; set; }
-    public decimal TotalAmount { get; set; }
+    public string SelectedSeats { get; set; }
+    public int TotalAmount { get; set; }
 }

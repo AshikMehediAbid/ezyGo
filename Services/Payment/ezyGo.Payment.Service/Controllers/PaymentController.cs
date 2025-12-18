@@ -67,9 +67,9 @@ public class PaymentController : ControllerBase
 
             var validationResult = await _paymentService.ValidatePaymentAsync(mer_txnid);
 
-            // Update order/payment status in your database here
-            // await _orderService.UpdatePaymentStatusAsync(mer_txnid, validationResult);
-            // Redirect to frontend with success
+            // update payment status to successful
+            await _paymentService.UpdatePaymentStatus(mer_txnid, "Success");
+
             return Redirect($"http://localhost:8080/payment/result?status=success&mer_txnid={mer_txnid}");
             return Ok(new
             {
