@@ -8,5 +8,6 @@ public interface IBusStationService
     Task DeleteBusStationAsync(int id);
     Task<Station> GetBusStationByIdAsync(int id);
     Task<IEnumerable<Station>> GetBusStationsAsync(string? filter);
+    Task<IEnumerable<string>> GetStationsNameAsync(string? filter);
     Task UpdateBusStationAsync(Station bus);
 }

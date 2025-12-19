@@ -13,6 +13,15 @@ public class AdminClient : IAdminClient
         _httpClient = httpClient;
     }
 
+    public async Task<List<string>> GetAllCounter(string filter)
+    {
+        var url = $"api/admin/station-name?filter={filter}";
+
+        var response = await _httpClient.GetFromJsonAsync<List<string>>(url);
+
+        return response;
+    }
+
     public async Task<List<TripTemplateClientResponse>> GetAllTripTemplate()
     {
         var requestUrl = $"api/trip-template/all";

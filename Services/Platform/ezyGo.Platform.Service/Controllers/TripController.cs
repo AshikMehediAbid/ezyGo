@@ -36,6 +36,22 @@ public class TripController : ControllerBase
     }
 
     [HttpGet]
+    [Route("locations")]
+    public async Task<IActionResult> SearchLocation(string search)
+    {
+        try
+        {
+            var locations = await _tripService.SearchLocationAsync(search);
+
+            return Ok(locations);
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex);
+        }
+    }
+
+    [HttpGet]
     [Route("seats/{tripId}")]
     public async Task<IActionResult> GetAllSeatByTripId(int tripId)
     {
