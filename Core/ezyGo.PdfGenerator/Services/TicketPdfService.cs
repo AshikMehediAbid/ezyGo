@@ -1,6 +1,7 @@
 ﻿using ezyGo.PdfGenerator.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace ezyGo.PdfGenerator.Services;
 
@@ -80,6 +81,26 @@ public class TicketPdfService : ITicketPdfService
                     });
 
                     col.Item().PaddingVertical(15);
+
+
+                    /* ================= QR CODE ================= */
+                    if (model.QrCodeImage is { Length: > 0 })
+                    {
+                        col.Item()
+                        .AlignCenter()
+                        .Height(200)
+                        .Width(200)
+                        .Image(model.QrCodeImage, ImageScaling.FitArea);
+
+                        col.Item()
+                           .AlignCenter()
+                           .Text("Scan this QR code")
+                           .Italic()
+                           .FontColor(Colors.Grey.Darken1)
+                           .FontSize(10);
+                    }
+
+                    col.Item().PaddingVertical(30);
 
                     /* ================= FARE SECTION ================= */
                     col.Item().Background(Colors.Grey.Lighten3).Padding(15).Row(row =>

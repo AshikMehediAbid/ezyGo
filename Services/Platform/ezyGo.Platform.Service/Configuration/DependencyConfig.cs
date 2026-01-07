@@ -5,6 +5,7 @@ using ezyGo.PdfGenerator.Services;
 using ezyGo.Platform.Domain.DistributedLock;
 using ezyGo.Platform.Domain.Managers;
 using ezyGo.Platform.Domain.Managers.Interfaces;
+using ezyGo.QrCodeGenerator.Services;
 using Polly;
 using QuestPDF.Infrastructure;
 using StackExchange.Redis;
@@ -95,5 +96,8 @@ public static class DependencyConfig
 
         // PDF Generation Service
         services.AddScoped<ITicketPdfService, TicketPdfService>();
+
+        // QR Code Generation Service
+        services.AddScoped<IQrCodeService, QrCodeService>();
     }
 }

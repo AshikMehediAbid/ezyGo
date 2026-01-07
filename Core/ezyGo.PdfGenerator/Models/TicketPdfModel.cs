@@ -13,4 +13,5 @@ public class TicketPdfModel
     public string To { get; set; }
     public int Fare { get; set; }
     public string TicketNo { get; set; }
+    public byte[]? QrCodeImage { get; set; }
 }
