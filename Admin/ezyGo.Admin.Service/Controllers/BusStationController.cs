@@ -100,6 +100,23 @@ public class BusStationController : ControllerBase
         
     }
 
+    [HttpGet]
+    [Route("station-name")]
+    public async Task<IActionResult> GetAllStationsName(string? filter)
+    {
+        try
+        {
+            var stations = await _busStationService.GetStationsNameAsync(filter);
+            return Ok(stations);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message.ToString());
+
+        }
+
+    }
+
     [HttpDelete]
     [Route("bus-station")]
     public async Task<IActionResult> DeleteStations(int id)

@@ -7,4 +7,5 @@ public interface IBusStationRepository : IGenericRepository<BusStationEntity>
 {
     Task<List<BusStationEntity>> GetStations(string? filter);
     Task DeleteBusStationWithDependenciesAsync(BusStationEntity station);
+    Task<List<string>> GetStationsNameAsync(string? filter);
 }

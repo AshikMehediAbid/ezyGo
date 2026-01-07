@@ -58,6 +58,11 @@ public class BusStationService : IBusStationService
         return _mapper.Map<IEnumerable<Station>>(station);
     }
 
+    public async Task<IEnumerable<string>> GetStationsNameAsync(string? filter)
+    {
+        List<string> stationsName = await _busStationRepo.GetStationsNameAsync(filter);
+        return stationsName;
+    }
 
     public async Task UpdateBusStationAsync(Station station)
     {

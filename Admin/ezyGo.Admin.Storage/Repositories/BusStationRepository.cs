@@ -58,4 +58,15 @@ public class BusStationRepository : GenericRepository<BusStationEntity>, IBusSta
         await _db.SaveChangesAsync();
     }
 
+    public Task<List<string>> GetStationsNameAsync(string? filter)
+    {
+        var stationsQuery = _db.BusStations.AsQueryable().AsNoTracking();
+        if (!string.IsNullOrEmpty(filter))
+        {
+            stationsQuery = stationsQuery.Where(s => s.StationName.Contains(filter));
+        }
+        return stationsQuery
+            .Select(s => s.StationName)
+            .ToListAsync();
+    }
 }
