@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.PdfGenerator", "Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.QrCodeGenerator", "Core\ezyGo.QrCodeGenerator\ezyGo.QrCodeGenerator.csproj", "{3AA30F06-BF71-40BD-BF6A-ED7FBA471BA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezyGo.Platform.Test", "Services\Platform\ezyGo.Platform.Test\ezyGo.Platform.Test.csproj", "{793C5019-2814-4E2C-A316-BDC6E7B91EC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +179,10 @@ Global
 		{3AA30F06-BF71-40BD-BF6A-ED7FBA471BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AA30F06-BF71-40BD-BF6A-ED7FBA471BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AA30F06-BF71-40BD-BF6A-ED7FBA471BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{793C5019-2814-4E2C-A316-BDC6E7B91EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{793C5019-2814-4E2C-A316-BDC6E7B91EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{793C5019-2814-4E2C-A316-BDC6E7B91EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{793C5019-2814-4E2C-A316-BDC6E7B91EC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +219,7 @@ Global
 		{DECC130E-33B7-4673-BE48-83FB9713D37D} = {F96F1E88-B03A-4DD3-A7AD-D56D17BBBB3B}
 		{60CBC679-8B94-44C5-A27C-BAACE29A0954} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
 		{3AA30F06-BF71-40BD-BF6A-ED7FBA471BA7} = {76AC566B-0700-4737-A7C1-4BE698B2CB88}
+		{793C5019-2814-4E2C-A316-BDC6E7B91EC8} = {F595A63C-14D5-4C8C-8351-2775EB31B988}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F974680-2C72-4A69-986B-803F9B7AB4AA}
