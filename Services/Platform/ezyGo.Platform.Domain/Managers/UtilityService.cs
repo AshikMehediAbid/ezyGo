@@ -6,18 +6,12 @@ using ezyGo.QrCodeGenerator.Services;
 
 namespace ezyGo.Platform.Domain.Managers;
 
-public class UtilityService : IUtilityService
+public class UtilityService(
+    IPaymentClient _paymentClient,
+    ITicketPdfService _ticketPdfService,
+    IQrCodeService _qrCodeService
+    ) : IUtilityService
 {
-    private readonly IPaymentClient _paymentClient;
-    private readonly ITicketPdfService _ticketPdfService;
-    private readonly IQrCodeService _qrCodeService;
-
-    public UtilityService(IPaymentClient paymentClient, ITicketPdfService ticketPdfService, IQrCodeService qrCodeService)
-    {
-        _paymentClient = paymentClient;
-        _ticketPdfService = ticketPdfService;
-        _qrCodeService = qrCodeService;
-    }
 
     public async Task<byte[]> GenerateTicketPdfAsync(string transactionId)
     {
@@ -25,12 +19,8 @@ public class UtilityService : IUtilityService
             throw new ArgumentException("Transaction ID is required");
 
         // Get payment info
-        var paymentInfo =
-            await _paymentClient.GetPaymentInfoByTransactionIdAsync(transactionId);
-
-        if (paymentInfo == null)
-            throw new KeyNotFoundException(
-                "Payment information not found for the given transaction ID");
+        var paymentInfo = await _paymentClient.GetPaymentInfoByTransactionIdAsync(transactionId) ??
+                          throw new KeyNotFoundException("Payment information not found for the given transaction ID");
 
         // Build ticket model
         var ticketModel = new TicketPdfModel
@@ -53,7 +43,7 @@ public class UtilityService : IUtilityService
                          $"Journey Date: {ticketModel.JourneyDate:yyyy-MM-dd} | " +
                          $"Bus: {ticketModel.BusNumber} | " +
                          $"{ticketModel.From} - {ticketModel.To} | " +
-                         $"Seat/s: {ticketModel.SeatNames} | "+
+                         $"Seat/s: {ticketModel.SeatNames} | " +
                          $"Fare: {ticketModel.Fare} ";
 
         // Generate QR code

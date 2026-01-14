@@ -5,7 +5,6 @@ using ezyGo.Admin.Storage.Entities;
 using ezyGo.Admin.Storage.Repositories;
 using ezyGo.Core.Exceptions;
 using Moq;
-using System.Runtime.CompilerServices;
 
 namespace ezyGo.Admin.Test.UnitTests;
 
