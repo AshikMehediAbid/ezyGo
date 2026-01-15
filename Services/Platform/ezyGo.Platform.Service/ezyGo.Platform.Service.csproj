@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ezyGo.Core.Web\ezyGo.Core.Web.csproj" />
     <ProjectReference Include="..\ezyGo.Platform.Domain\ezyGo.Platform.Domain.csproj" />
     <ProjectReference Include="..\..\..\Core\ezyGo.PdfGenerator\ezyGo.PdfGenerator.csproj" />
     <ProjectReference Include="..\..\..\Core\ezyGo.Core.ServiceClients\ezyGo.Core.ServiceClients.csproj" />

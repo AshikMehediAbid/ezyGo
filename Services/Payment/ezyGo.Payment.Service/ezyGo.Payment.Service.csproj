@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ezyGo.Core.Web\ezyGo.Core.Web.csproj" />
     <ProjectReference Include="..\ezyGo.Payment.Domain\ezyGo.Payment.Domain.csproj" />
     <ProjectReference Include="..\ezyGo.Payment.Storage\ezyGo.Payment.Storage.csproj" />
   </ItemGroup>

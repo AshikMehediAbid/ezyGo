@@ -1,4 +1,5 @@
 ﻿using ezyGo.Platform.Domain.Managers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ezyGo.Platform.Service.Controllers;
@@ -51,6 +52,7 @@ public class TripController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Customer" )]
     [HttpGet]
     [Route("seats/{tripId}")]
     public async Task<IActionResult> GetAllSeatByTripId(int tripId)

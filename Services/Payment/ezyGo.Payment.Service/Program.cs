@@ -1,4 +1,5 @@
 using ezyGo.Core.Notification.Email.Services;
+using ezyGo.Core.Web;
 using ezyGo.Payment.Domain.Managers;
 using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Service.Configuration;
@@ -47,6 +48,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+// Authentication
+builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
