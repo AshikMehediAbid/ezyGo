@@ -1,9 +1,11 @@
 ﻿using ezyGo.Payment.Domain.Managers.Interfaces;
 using ezyGo.Payment.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ezyGo.Payment.Service.Controllers;
 
+//[Authorize]
 [Route("api/payment")]
 [ApiController]
 public class PaymentController : ControllerBase

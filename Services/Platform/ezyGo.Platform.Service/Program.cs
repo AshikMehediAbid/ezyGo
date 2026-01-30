@@ -1,3 +1,4 @@
+using ezyGo.Core.Web;
 using ezyGo.Platform.Service.Configuration;
 using QuestPDF.Infrastructure;
 
@@ -15,6 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Authentication
+builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -40,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowVueFrontend");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

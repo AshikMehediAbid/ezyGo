@@ -1,4 +1,5 @@
 ﻿using ezyGo.Platform.Domain.Managers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ public class SeatController : ControllerBase
         _seatService = seatService;
     }
 
+  //  [Authorize(Roles = "Customer")]
     [HttpPost]
     [Route("reserve-seat")]
     public async Task<IActionResult> ReserveSeat([FromQuery] int seatNo)
@@ -34,7 +36,7 @@ public class SeatController : ControllerBase
         
     }
 
-
+   // [Authorize(Roles = "Customer")]
     [HttpPost]
     [Route("release-seat")]
     public async Task<IActionResult> ReleaseSeat([FromQuery] int seatNo)

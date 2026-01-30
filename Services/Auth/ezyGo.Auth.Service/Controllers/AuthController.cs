@@ -1,6 +1,7 @@
 ﻿using ezyGo.Auth.Domain.Exceptions;
 using ezyGo.Auth.Domain.Managers;
 using ezyGo.Auth.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -101,6 +102,35 @@ public class AuthController : ControllerBase
             _logger.LogError(ex, "Unexpected error during login");
             return StatusCode(500, new { message = "An internal server error occurred" });
         }
+    }
+
+
+    [HttpPost]
+    [Route("sign-out")]
+    public IActionResult SignOut()
+    {
+        // Since JWT is stateless, sign-out can be handled on the client side by deleting the token.
+        // Optionally, implement token blacklisting on the server side if needed.
+        return Ok(new { message = "Sign-out successful" });
+    }
+    
+
+    [Authorize]
+    [HttpGet]
+    [Route("get-claims")]
+    public IActionResult GetClaim()
+    {
+        var user = HttpContext.User;
+        var claims = user.Claims.Select(c => new { c.Type, c.Value }).ToList();
+
+        var roleClaim = user.Claims.FirstOrDefault(c => c.Type.EndsWith("role"));
+
+        return Ok(new
+        {
+            IsAuthenticated = user.Identity.IsAuthenticated,
+            Claims = claims,
+            Role = roleClaim?.Value
+        });
     }
 
 }

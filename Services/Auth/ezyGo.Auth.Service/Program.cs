@@ -2,10 +2,9 @@ using ezyGo.Auth.Domain.Managers;
 using ezyGo.Auth.Domain.Mapping;
 using ezyGo.Auth.Storage.Repositories;
 using ezyGo.Auth.Storage.Sql;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ezyGo.Core.Web;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +19,28 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 
+// Authentication
+builder.Services.AddJwtBearerAuthentication(builder.Configuration);
+
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
-
-
-
-
-
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueFrontend",
+        builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:8080") // Vue app origin
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
 
 // Add structured logging
 builder.Services.AddLogging(logging =>
@@ -73,14 +85,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapScalarApiReference();
+   // app.UseSwagger();
+//app.UseSwaggerUI();
+    
 }
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowVueFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -93,6 +93,11 @@ public class AuthService : IAuthService
         }
     }
 
+    public Task<string> UserLogoutAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task UserRegisterAsync(UserRegister newUser)
     {
         try
